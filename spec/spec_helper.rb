@@ -1,0 +1,1 @@
+require 'u2f'
