@@ -85,7 +85,7 @@ module U2F
             "\0".force_encoding('ASCII-8BIT') << key
 
       pem = "-----BEGIN PUBLIC KEY-----\r\n" +
-            Base64.urlsafe_encode64(der).scan(/.{1,64}/).join("\r\n") +
+            Base64.encode64(der).scan(/.{1,64}/).join("\r\n") +
             "\r\n-----END PUBLIC KEY-----"
       pem
     end
