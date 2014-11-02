@@ -1,12 +1,13 @@
 module U2F
   class SignResponse
-    attr_accessor :client_data, :key_handle, :signature_data
+    attr_accessor :client_data, :client_data_json, :key_handle, :signature_data
 
     def self.create_from_json(json)
       data = ::JSON.parse(json)
       instance = self.new
-      instance.client_data =
-        ::JSON.parse(Base64.urlsafe_decode64(data['clientData']))
+      instance.client_data_json =
+        Base64.urlsafe_decode64(data['clientData'])
+      instance.client_data = ::JSON.parse(instance.client_data_json)
       instance.key_handle = data['keyHandle']
       instance.signature_data =
         Base64.urlsafe_decode64(data['signatureData'])
@@ -14,7 +15,8 @@ module U2F
     end
 
     def counter
-      signature_data[1..4].unpack('Nctr')
+      # FIXME
+      signature_data[1..4].unpack('Nctr').first
     end
 
     def signature
@@ -25,7 +27,7 @@ module U2F
       data = [
         Digest::SHA256.digest(app_id),
         signature_data.byteslice(0, 5),
-        client_data
+        Digest::SHA256.digest(client_data_json)
       ].join
 
       public_key = OpenSSL::PKey.read(public_key_pem)
