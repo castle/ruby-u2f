@@ -44,7 +44,7 @@ module U2F
 
       t_byte = certificate_bytes(0)
 
-      fail CertificateDecodeError unless t_byte == "\x30"
+      fail AttestationDecodeError unless t_byte == "\x30"
 
       l_byte = certificate_bytes(1).unpack('c').first # 8-bit signed integer
       # If the L-byte has MSB set to 1 (ie. < 0) the value will tell how many
@@ -122,8 +122,9 @@ module U2F
         key_handle_raw,
         public_key_raw
       ].join
-      public_key = OpenSSL::PKey.read(U2F::public_key_pem(public_key_raw))
-      public_key.verify(OpenSSL::Digest::SHA256.new, signature, data)
+
+      cert = OpenSSL::X509::Certificate.new(certificate_raw)
+      cert.public_key.verify(OpenSSL::Digest::SHA256.new, signature, data)
     end
 
     private

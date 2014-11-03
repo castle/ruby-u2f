@@ -54,6 +54,6 @@ describe U2F::RegisterResponse do
 
   describe '#verify' do
     subject { register_response.verify(app_id) }
-    xit { is_expected.to be_truthy }
+    it { is_expected.to be_truthy }
   end
 end

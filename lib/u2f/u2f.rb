@@ -7,7 +7,7 @@ module U2F
 
     ##
     # Generate data to be sent to the U2F device before authenticating
-    def authenticate_data(key_handles)
+    def authentication_data(key_handles)
       key_handles = [key_handles] unless key_handles.is_a? Array
       key_handles.each do |key_handle|
         SignRequest.new(key_handle, challenge, app_id)
@@ -57,7 +57,7 @@ module U2F
 
     ##
     # Generate data to be used when registering a U2F device
-    def register_data(key_handles = [])
+    def registration_data(key_handles = [])
       [
         RegisterRequest.new(challenge, @app_id),
         authenticate_data(key_handles)
@@ -66,17 +66,27 @@ module U2F
 
     ##
     # Authenticate the response from the U2F device when registering
+    # Returns a registration object
     def register!(request, response)
       unless request.challenge == response.challenge
         fail UnmatchedChallengeError
       end
 
       # Validate public key
-      public_key_pem(response.public_key)
+      U2F.public_key_pem(response.public_key_raw)
 
-      registration = Registration.new
-      registration.public_key = response.public_key
-      registration.key_handle = response.key_handle
+      unless U2F.validate_certificate(response.certificate_raw)
+        fail AttestationVerificationError
+      end
+
+      fail AttestationSignatureError unless response.verify(app_id)
+
+      registration = Registration.new(
+        response.key_handle,
+        response.public_key,
+        response.certificate
+      )
+      registration
     end
 
     def private_key
@@ -99,7 +109,12 @@ module U2F
       pem
     end
 
-    def self.public_key(public_key_pem)
+    def self.validate_certificate(certificate_raw)
+      # TODO
+      return true
+      # cacert = OpenSSL::X509::Certificate.new()
+      # cert = OpenSSL::X509::Certificate.new(certificate_raw)
+      # cert.verify(cacert.public_key)
     end
   end
 end
