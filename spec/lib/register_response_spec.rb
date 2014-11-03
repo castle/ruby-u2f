@@ -2,7 +2,7 @@ require 'spec_helper.rb'
 
 describe U2F::RegisterResponse do
   let(:key_handle) do
-    'CTUayZo8hCBeC-sGQJChC0wW-bBg99bmOlGCgw8XGq4dLsxO3yWh9mRYArZxocP5hBB1pEGB3bbJYiM-5acc5w'
+    'CTUayZo8hCBeC-sGQJChC0wW-bBg99bmOlGCgw8XGq4dLsxO3yWh9mRYArZxocP5hBB1pEGB3bbJYiM-5acc5w=='
   end
   let(:public_key) do
     'BC0SaFZWC9uH7wamOwduP93kUH2I2hEvyY0Srfj4A258pZSlV0iPoFIH+bd4yhncaqdoPLdEDl5Y/yaFORPUe3c='
@@ -44,7 +44,7 @@ describe U2F::RegisterResponse do
 
   describe '#key_handle_length' do
     subject { register_response.key_handle_length }
-    it { is_expected.to eq Base64.decode64(key_handle).length }
+    it { is_expected.to eq Base64.urlsafe_decode64(key_handle).length }
   end
 
   describe '#public_key' do
