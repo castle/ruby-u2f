@@ -8,5 +8,9 @@ module U2F
       @challenge = challenge
       @app_id = app_id
     end
+
+    def as_json
+      super.merge(keyHandle: key_handle)
+    end
   end
 end

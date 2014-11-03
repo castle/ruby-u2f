@@ -57,11 +57,8 @@ module U2F
 
     ##
     # Generate data to be used when registering a U2F device
-    def registration_data(key_handles = [])
-      [
-        RegisterRequest.new(challenge, @app_id),
-        authenticate_data(key_handles)
-      ]
+    def registration_data
+      [ RegisterRequest.new(challenge, @app_id) ]
     end
 
     ##
