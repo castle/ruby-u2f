@@ -4,7 +4,7 @@ module U2F
 
     def self.create_from_json(json)
       data = ::JSON.parse(json)
-      instance = self.new
+      instance = new
       instance.client_data_json =
         Base64.urlsafe_decode64(data['clientData'])
       instance.client_data = ::JSON.parse(instance.client_data_json)
@@ -16,7 +16,7 @@ module U2F
 
     def counter
       # FIXME
-      signature_data[1..4].unpack('Nctr').first
+      signature_data[1..4].unpack('N').first
     end
 
     def signature

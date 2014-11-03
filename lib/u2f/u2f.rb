@@ -67,7 +67,16 @@ module U2F
     ##
     # Authenticate the response from the U2F device when registering
     def register!(request, response)
-      # TODO
+      unless request.challenge == response.challenge
+        fail UnmatchedChallengeError
+      end
+
+      # Validate public key
+      public_key_pem(response.public_key)
+
+      registration = Registration.new
+      registration.public_key = response.public_key
+      registration.key_handle = response.key_handle
     end
 
     def private_key
@@ -85,7 +94,7 @@ module U2F
             "\0".force_encoding('ASCII-8BIT') << key
 
       pem = "-----BEGIN PUBLIC KEY-----\r\n" +
-            Base64.encode64(der).scan(/.{1,64}/).join("\r\n") +
+            Base64.strict_encode64(der).scan(/.{1,64}/).join("\r\n") +
             "\r\n-----END PUBLIC KEY-----"
       pem
     end
