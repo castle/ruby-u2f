@@ -66,8 +66,8 @@ module U2F
     ##
     # Authenticate the response from the U2F device when registering
     # Returns a registration object
-    def register!(request, response)
-      unless request.challenge == response.client_data.challenge
+    def register!(challenge, response)
+      unless challenge == response.client_data.challenge
         fail UnmatchedChallengeError
       end
 
