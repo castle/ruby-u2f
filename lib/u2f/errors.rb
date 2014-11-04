@@ -1,6 +1,7 @@
 module U2F
   class U2FError < StandardError;end
   class UnmatchedChallengeError < U2FError;end
+  class ClientDataTypeError < U2FError;end
   class PublicKeyDecodeError < U2FError;end
   class AttestationDecodeError < U2FError;end
   class AttestationVerificationError < U2FError;end

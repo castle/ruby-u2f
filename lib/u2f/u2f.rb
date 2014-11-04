@@ -24,10 +24,12 @@ module U2F
       # Find a request that matches the response key_handle and challenge
       request = requests.detect do |req|
         req.key_handle == response.key_handle &&
-        req.challenge == response.client_data['challenge']
+        req.challenge == response.client_data.challenge
       end
 
       fail NoMatchingRequestError unless request
+
+      fail ClientDataTypeError unless response.client_data.authentication?
 
       # Find a registration that matches the response key_handle
       registration = registrations.detect do |reg|
@@ -65,9 +67,11 @@ module U2F
     # Authenticate the response from the U2F device when registering
     # Returns a registration object
     def register!(request, response)
-      unless request.challenge == response.challenge
+      unless request.challenge == response.client_data.challenge
         fail UnmatchedChallengeError
       end
+
+      fail ClientDataTypeError unless response.client_data.registration?
 
       # Validate public key
       U2F.public_key_pem(response.public_key_raw)

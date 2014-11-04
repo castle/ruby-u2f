@@ -18,14 +18,11 @@ module U2F
       instance = new
       instance.client_data_json =
         Base64.urlsafe_decode64(data['clientData'])
-      instance.client_data = ::JSON.parse(instance.client_data_json)
+      instance.client_data =
+        ClientData.create_from_json(instance.client_data_json)
       instance.registration_data_raw =
         Base64.urlsafe_decode64(data['registrationData'])
       instance
-    end
-
-    def challenge
-      client_data['challenge']
     end
 
     def certificate

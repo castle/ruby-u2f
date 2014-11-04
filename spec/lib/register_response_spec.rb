@@ -32,9 +32,11 @@ describe U2F::RegisterResponse do
     it { is_expected.to eq certificate }
   end
 
-  describe '#challenge' do
-    subject { register_response.challenge }
-    it { is_expected.to eq challenge }
+  describe '#client_data' do
+    context 'challenge' do
+      subject { register_response.client_data.challenge }
+      it { is_expected.to eq challenge }
+    end
   end
 
   describe '#key_handle' do

@@ -7,7 +7,8 @@ module U2F
       instance = new
       instance.client_data_json =
         Base64.urlsafe_decode64(data['clientData'])
-      instance.client_data = ::JSON.parse(instance.client_data_json)
+      instance.client_data =
+        ClientData.create_from_json(instance.client_data_json)
       instance.key_handle = data['keyHandle']
       instance.signature_data =
         Base64.urlsafe_decode64(data['signatureData'])

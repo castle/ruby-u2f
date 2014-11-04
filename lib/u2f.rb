@@ -2,6 +2,7 @@ require 'base64'
 require 'json'
 require 'openssl'
 
+require 'u2f/client_data'
 require 'u2f/errors'
 require 'u2f/request_base'
 require 'u2f/register_request'
