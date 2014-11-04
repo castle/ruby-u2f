@@ -95,10 +95,14 @@ module U2F
     # Convert a binary public key to PEM format
     def self.public_key_pem(key)
       fail PublicKeyDecodeError unless key.length == 65 || key[0] == "\x04"
-
-      der = "\x30\x59\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01".force_encoding('ASCII-8BIT') <<
-            "\x06\x08\x2a\x86\x48\xce\x3d\x03\x01\x07\x03\x42".force_encoding('ASCII-8BIT') <<
-            "\0".force_encoding('ASCII-8BIT') << key
+      # http://tools.ietf.org/html/rfc5480
+      der = OpenSSL::ASN1::Sequence([
+        OpenSSL::ASN1::Sequence([
+          OpenSSL::ASN1::ObjectId('1.2.840.10045.2.1'),  # id-ecPublicKey
+          OpenSSL::ASN1::ObjectId('1.2.840.10045.3.1.7') # secp256r1
+        ]),
+        OpenSSL::ASN1::BitString(key)
+      ]).to_der
 
       pem = "-----BEGIN PUBLIC KEY-----\r\n" +
             Base64.strict_encode64(der).scan(/.{1,64}/).join("\r\n") +
