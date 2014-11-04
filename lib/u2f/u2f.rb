@@ -66,10 +66,13 @@ module U2F
     ##
     # Authenticate the response from the U2F device when registering
     # Returns a registration object
-    def register!(challenge, response)
-      unless challenge == response.client_data.challenge
-        fail UnmatchedChallengeError
+    def register!(challenges, response)
+      challenges = [challenges] unless challenges.is_a? Array
+      challenge = challenges.detect do |chg|
+        chg == response.client_data.challenge
       end
+
+      fail UnmatchedChallengeError unless challenge
 
       fail ClientDataTypeError unless response.client_data.registration?
 

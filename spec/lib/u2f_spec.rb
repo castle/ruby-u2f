@@ -52,6 +52,20 @@ describe U2F do
         }.to_not raise_error
         expect(reg.key_handle).to eq key_handle
       end
+
+      it 'accepts an array of challenges' do
+        reg = u2f.register!(['another-challenge', challenge], register_response)
+        expect(reg).to be_a U2F::Registration
+      end
+    end
+
+    context 'with unknown challenge' do
+      let(:challenge) { 'non-matching' }
+      it 'raises an UnmatchedChallengeError' do
+        expect {
+          u2f.register!(challenge, register_response)
+        }.to raise_error(U2F::UnmatchedChallengeError)
+      end
     end
   end
 
