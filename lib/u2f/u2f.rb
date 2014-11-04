@@ -33,6 +33,8 @@ module U2F
 
       fail AuthenticationFailedError unless response.verify(app_id, pem)
 
+      fail UserNotPresentError unless response.user_present?
+
       unless response.counter > registration_counter
         fail CounterToLowError
       end

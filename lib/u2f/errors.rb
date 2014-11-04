@@ -10,4 +10,5 @@ module U2F
   class NoMatchingRegistrationError < Error; end
   class CounterToLowError < Error; end
   class AuthenticationFailedError < Error; end
+  class UserNotPresentError < Error;end
 end

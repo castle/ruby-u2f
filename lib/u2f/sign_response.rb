@@ -15,15 +15,29 @@ module U2F
       instance
     end
 
+    ##
+    # Counter value that the U2F token increments every time it performs an
+    # authentication operation
     def counter
-      # FIXME
       signature_data[1..4].unpack('N').first
     end
 
+    ##
+    # signature is to be verified using the public key obtained during
+    # registration.
     def signature
       signature_data.byteslice(5..-1)
     end
 
+    ##
+    # If user presence was verified
+    def user_present?
+      signature_data[0].unpack('C').first == 1
+    end
+
+    ##
+    # Verifies the response against an app id and the public key of the
+    # registered device
     def verify(app_id, public_key_pem)
       data = [
         Digest::SHA256.digest(app_id),
