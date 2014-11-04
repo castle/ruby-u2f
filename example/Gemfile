@@ -1,0 +1,20 @@
+source 'https://rubygems.org'
+
+# Project requirements
+gem 'rake'
+
+# Component requirements
+gem 'haml'
+gem 'dm-sqlite-adapter'
+gem 'dm-validations'
+gem 'dm-timestamps'
+gem 'dm-migrations'
+gem 'dm-constraints'
+gem 'dm-aggregates'
+gem 'dm-types'
+gem 'dm-core'
+
+# Padrino Stable Gem
+gem 'padrino', '0.12.4'
+
+gem 'u2f', path: '../.'

@@ -1,0 +1,9 @@
+---
+:orm: datamapper
+:test: none
+:mock: none
+:script: none
+:renderer: haml
+:stylesheet: none
+:namespace: U2FExample
+:migration_format: number

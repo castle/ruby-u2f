@@ -1,0 +1,20 @@
+= form_tag '/authentications', method: 'post' do
+  = hidden_field_tag :response
+
+:javascript
+  var signRequests = #{@sign_requests.to_json.html_safe};
+
+  u2f.sign(signRequests, function(signResponse) {
+    var form, reg;
+
+    if (signResponse.errorCode) {
+      return alert("Authentication error: " + signResponse.errorCode);
+    }
+
+    form = document.forms[0];
+    response = document.querySelector('[name=response]');
+
+    response.value = JSON.stringify(signResponse);
+
+    form.submit();
+  });

@@ -1,0 +1,21 @@
+= form_tag '/registrations', method: 'post' do
+  = hidden_field_tag :response
+
+:javascript
+  var registerRequests = #{@registration_requests.to_json.html_safe};
+  var signRequests = #{@sign_requests.to_json.html_safe};
+
+  u2f.register(registerRequests, signRequests, function(registerResponse) {
+    var form, reg;
+
+    if (registerResponse.errorCode) {
+      return alert("Registration error: " + registerResponse.errorCode);
+    }
+
+    form = document.forms[0];
+    response = document.querySelector('[name=response]');
+
+    response.value = JSON.stringify(registerResponse);
+
+    form.submit();
+  });
