@@ -1,13 +1,13 @@
 module U2F
-  class U2FError < StandardError;end
-  class UnmatchedChallengeError < U2FError;end
-  class ClientDataTypeError < U2FError;end
-  class PublicKeyDecodeError < U2FError;end
-  class AttestationDecodeError < U2FError;end
-  class AttestationVerificationError < U2FError;end
-  class AttestationSignatureError < U2FError;end
-  class NoMatchingRequestError < U2FError;end
-  class NoMatchingRegistrationError < U2FError;end
-  class CounterToLowError < U2FError;end
-  class AuthenticationFailedError < U2FError;end
+  class Error < StandardError;end
+  class UnmatchedChallengeError < Error; end
+  class ClientDataTypeError < Error; end
+  class PublicKeyDecodeError < Error; end
+  class AttestationDecodeError < Error; end
+  class AttestationVerificationError < Error; end
+  class AttestationSignatureError < Error; end
+  class NoMatchingRequestError < Error; end
+  class NoMatchingRegistrationError < Error; end
+  class CounterToLowError < Error; end
+  class AuthenticationFailedError < Error; end
 end
