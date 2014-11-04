@@ -14,7 +14,7 @@ module U2F
       typ == 'navigator.id.getAssertion'
     end
 
-    def self.create_from_json(json)
+    def self.load_from_json(json)
       client_data = ::JSON.parse(json)
       instance = new
       instance.typ = client_data['typ']

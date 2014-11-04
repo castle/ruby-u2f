@@ -10,7 +10,7 @@ U2FExample::App.controllers :registrations do
   end
 
   post :index do
-    response = U2F::RegisterResponse.create_from_json(params[:response])
+    response = U2F::RegisterResponse.load_from_json(params[:response])
 
     reg = begin
       u2f.register!(session[:challenges], response)

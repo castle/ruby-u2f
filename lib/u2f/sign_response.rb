@@ -2,13 +2,13 @@ module U2F
   class SignResponse
     attr_accessor :client_data, :client_data_json, :key_handle, :signature_data
 
-    def self.create_from_json(json)
+    def self.load_from_json(json)
       data = ::JSON.parse(json)
       instance = new
       instance.client_data_json =
         Base64.urlsafe_decode64(data['clientData'])
       instance.client_data =
-        ClientData.create_from_json(instance.client_data_json)
+        ClientData.load_from_json(instance.client_data_json)
       instance.key_handle = data['keyHandle']
       instance.signature_data =
         Base64.urlsafe_decode64(data['signatureData'])

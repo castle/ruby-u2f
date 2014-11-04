@@ -23,10 +23,10 @@ describe U2F do
     U2F::Registration.new(key_handle, public_key, certificate)
   end
   let(:register_response) do
-    U2F::RegisterResponse.create_from_json(registration_data_json)
+    U2F::RegisterResponse.load_from_json(registration_data_json)
   end
   let(:response) do
-    U2F::SignResponse.create_from_json json_response
+    U2F::SignResponse.load_from_json json_response
   end
   let(:sign_request) do
     U2F::SignRequest.new(key_handle, challenge, app_id)

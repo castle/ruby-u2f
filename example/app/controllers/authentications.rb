@@ -10,7 +10,7 @@ U2FExample::App.controllers :authentications do
   end
 
   post :index do
-    response = U2F::SignResponse.create_from_json(params[:response])
+    response = U2F::SignResponse.load_from_json(params[:response])
 
     registration = Registration.first(key_handle: response.key_handle)
     return 'Need to register first' unless registration

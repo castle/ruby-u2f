@@ -12,23 +12,27 @@ module U2F
     KEY_HANDLE_LENGTH_OFFSET = PUBLIC_KEY_OFFSET + PUBLIC_KEY_LENGTH
     KEY_HANDLE_OFFSET = KEY_HANDLE_LENGTH_OFFSET + KEY_HANDLE_LENGTH_LENGTH
 
-    def self.create_from_json(json)
+    def self.load_from_json(json)
       # TODO: validate
       data = JSON.parse(json)
       instance = new
       instance.client_data_json =
         Base64.urlsafe_decode64(data['clientData'])
       instance.client_data =
-        ClientData.create_from_json(instance.client_data_json)
+        ClientData.load_from_json(instance.client_data_json)
       instance.registration_data_raw =
         Base64.urlsafe_decode64(data['registrationData'])
       instance
     end
 
+    ##
+    # The attestation certificate in Base64 encoded X.509 DER format
     def certificate
       Base64.strict_encode64(certificate_raw)
     end
 
+    ##
+    # Length of the attestation certificate
     def certificate_length
       # http://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One#Example_encoded_in_DER
       #
@@ -63,6 +67,8 @@ module U2F
       cert_length + nbr_length_bytes + 2 # Make up for the T and L bytes them selves
     end
 
+    ##
+    # The attestation certificate in X.509 DER format
     def certificate_raw
       certificate_bytes(0, certificate_length)
     end

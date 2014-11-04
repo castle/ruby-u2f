@@ -20,11 +20,7 @@ describe U2F::RegisterResponse do
   let(:registration_request) { U2F::RegisterRequest.new(challenge, app_id) }
 
   let(:register_response) do
-    U2F::RegisterResponse.create_from_json(registration_data_json)
-  end
-
-  describe '::create_from_json' do
-
+    U2F::RegisterResponse.load_from_json(registration_data_json)
   end
 
   describe '#certificate' do
