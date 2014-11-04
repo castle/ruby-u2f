@@ -17,39 +17,25 @@ module U2F
 
     ##
     # Authenticate a response from the U2F device
-    def authenticate!(requests, registrations, response)
+    def authenticate!(challenges, response, registration_public_key,
+                      registration_counter)
       # Handle both single and Array input
-      requests = [requests] unless requests.is_a? Array
-      registrations = [registrations] unless registrations.is_a? Array
+      challenges = [challenges] unless challenges.is_a? Array
 
-      # Find a request that matches the response key_handle and challenge
-      request = requests.detect do |req|
-        req.key_handle == response.key_handle &&
-        req.challenge == response.client_data.challenge
+      # TODO: check that it's the correct key_handle as well
+      unless challenges.include?(response.client_data.challenge)
+        fail NoMatchingRequestError
       end
-
-      fail NoMatchingRequestError unless request
 
       fail ClientDataTypeError unless response.client_data.authentication?
 
-      # Find a registration that matches the response key_handle
-      registration = registrations.detect do |reg|
-        reg.key_handle == response.key_handle
-      end
-
-      fail NoMatchingRegistrationError unless registration
-
-      pem = U2F.public_key_pem(registration.public_key)
+      pem = U2F.public_key_pem(registration_public_key)
 
       fail AuthenticationFailedError unless response.verify(app_id, pem)
 
-      if response.counter > registration.counter
-        registration.counter = response.counter
-      else
+      unless response.counter > registration_counter
         fail CounterToLowError
       end
-
-      registration
     end
 
     ##

@@ -42,10 +42,11 @@ describe U2F do
 
   describe '#authenticate!' do
     context 'with correct SignRequest' do
-      it 'returns an updated Registration' do
-        reg = u2f.authenticate!(sign_request, registration, response)
-        expect(reg).to be_truthy
-        expect(reg.counter).to be 4
+      it 'does not raise an error' do
+        expect {
+          u2f.authenticate!(challenge, response, registration.public_key,
+                            registration.counter)
+        }.to_not raise_error
       end
     end
   end
