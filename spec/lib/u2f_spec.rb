@@ -22,7 +22,6 @@ describe U2F do
   let(:registration) do
     U2F::Registration.new(key_handle, public_key, certificate)
   end
-  let(:registration_request) { U2F::RegisterRequest.new(challenge, app_id) }
   let(:register_response) do
     U2F::RegisterResponse.create_from_json(registration_data_json)
   end
@@ -49,7 +48,7 @@ describe U2F do
       it 'returns a registration' do
         reg = nil
         expect {
-          reg = u2f.register!(registration_request, register_response)
+          reg = u2f.register!(challenge, register_response)
         }.to_not raise_error
         expect(reg.key_handle).to eq key_handle
       end
