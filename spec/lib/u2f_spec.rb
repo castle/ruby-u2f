@@ -41,12 +41,34 @@ describe U2F do
   end
 
   describe '#authenticate!' do
-    context 'with correct SignRequest' do
+    let(:counter) { registration.counter }
+    let(:reg_public_key) { registration.public_key }
+    let (:u2f_authenticate) do
+      u2f.authenticate!(challenge, response, reg_public_key, counter)
+    end
+    context 'with correct parameters' do
       it 'does not raise an error' do
-        expect {
-          u2f.authenticate!(challenge, response, registration.public_key,
-                            registration.counter)
-        }.to_not raise_error
+        expect { u2f_authenticate }.to_not raise_error
+      end
+    end
+
+    context 'with incorrect challenge' do
+      let(:challenge) { 'incorrect' }
+      it 'raises NoMatchingRequestError' do
+        expect { u2f_authenticate }.to raise_error(U2F::NoMatchingRequestError)
+      end
+    end
+
+    context 'with incorrect counter' do
+      let(:counter) { 1000 }
+      it 'raises CounterToLowError' do
+        expect { u2f_authenticate }.to raise_error(U2F::CounterToLowError)
+      end
+    end
+    context 'with incorrect counter' do
+      let(:reg_public_key) { "\x00" }
+      it 'raises CounterToLowError' do
+        expect { u2f_authenticate }.to raise_error(U2F::PublicKeyDecodeError)
       end
     end
   end
