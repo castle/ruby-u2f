@@ -32,6 +32,14 @@ describe U2F do
     U2F::SignRequest.new(key_handle, challenge, app_id)
   end
 
+  describe '#authentication_requests' do
+    let(:requests) { u2f.authentication_requests(key_handle) }
+    it 'returns an array of requests' do
+      expect(requests).to be_an Array
+      requests.each { |r| expect(r).to be_a U2F::SignRequest }
+    end
+  end
+
   describe '#authenticate!' do
     context 'with correct SignRequest' do
       it 'returns an updated Registration' do
@@ -42,7 +50,15 @@ describe U2F do
     end
   end
 
-  describe '#register' do
+  describe '#registration_requests' do
+    let(:requests) { u2f.registration_requests }
+    it 'returns an array of requests' do
+      expect(requests).to be_an Array
+      requests.each { |r| expect(r).to be_a U2F::RegisterRequest }
+    end
+  end
+
+  describe '#register!' do
     let(:challenge) { 'yKA0x075tjJ-GE7fKTfnzTOSaNUOWQxRd9TWz5aFOg8' }
     context 'with correct registration data' do
       it 'returns a registration' do

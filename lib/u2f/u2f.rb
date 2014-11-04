@@ -7,9 +7,9 @@ module U2F
 
     ##
     # Generate data to be sent to the U2F device before authenticating
-    def authentication_data(key_handles)
+    def authentication_requests(key_handles)
       key_handles = [key_handles] unless key_handles.is_a? Array
-      key_handles.each do |key_handle|
+      key_handles.map do |key_handle|
         SignRequest.new(key_handle, challenge, app_id)
       end
     end
@@ -59,7 +59,8 @@ module U2F
 
     ##
     # Generate data to be used when registering a U2F device
-    def registration_data
+    def registration_requests
+      # TODO: generate a request for each supported version
       [ RegisterRequest.new(challenge, @app_id) ]
     end
 
