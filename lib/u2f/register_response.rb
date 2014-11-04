@@ -63,12 +63,6 @@ module U2F
       cert_length + nbr_length_bytes + 2 # Make up for the T and L bytes them selves
     end
 
-    def certificate_pem
-      "-----BEGIN CERTIFICATE-----" +
-      Base64.strict_encode64(certificate).scan(/.{1,64}/).join("\r\n") +
-      "-----END CERTIFICATE-----"
-    end
-
     def certificate_raw
       certificate_bytes(0, certificate_length)
     end

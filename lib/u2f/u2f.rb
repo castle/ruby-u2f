@@ -83,11 +83,6 @@ module U2F
       registration
     end
 
-    def private_key
-      # TODO: configure loading of private key
-      OpenSSL::PKey::RSA.new 'key_pem', 'pass_phrase'
-    end
-
     ##
     # Convert a binary public key to PEM format
     def self.public_key_pem(key)
