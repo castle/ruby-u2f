@@ -106,7 +106,7 @@ Catch the response on your server, verify it, and store a reference to it in you
 ```ruby
 # registrations_controller.rb
 def create
-  response = U2F::RegisterResponse.create_from_json(params[:response])
+  response = U2F::RegisterResponse.load_from_json(params[:response])
 
   reg = begin
     u2f.register!(session[:challenges], response)
@@ -181,7 +181,7 @@ Catch the response on your server, verify it, and bump the counter in your datab
 ```ruby
 # authentications_controller.rb
 def create
-  response = U2F::SignResponse.create_from_json(params[:response])
+  response = U2F::SignResponse.load_from_json(params[:response])
 
   registration = Registration.first(key_handle: response.key_handle)
   return 'Need to register first' unless registration
