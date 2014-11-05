@@ -64,9 +64,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  coveralls
-  json_expressions
-  rake
-  rspec
-  rubocop
+  coveralls (~> 0.7.1)
+  json_expressions (~> 0.8.3)
+  rake (~> 10.3.2)
+  rspec (~> 3.1.0)
+  rubocop (~> 0.27.0)
   u2f!
