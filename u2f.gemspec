@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'json_expressions', '~> 0.8.3'
   s.add_development_dependency 'rubocop', '~> 0.27.0'
   s.add_development_dependency 'coveralls', '~> 0.7.1'
+  s.add_development_dependency 'simplecov', '~> 0.9.1'
 end

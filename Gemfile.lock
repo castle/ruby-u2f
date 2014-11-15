@@ -69,4 +69,5 @@ DEPENDENCIES
   rake (~> 10.3.2)
   rspec (~> 3.1.0)
   rubocop (~> 0.27.0)
+  simplecov (~> 0.9.1)
   u2f!
