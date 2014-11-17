@@ -1,10 +1,12 @@
 # Ruby U2F
 
 [![Gem Version](https://badge.fury.io/rb/u2f.png)](http://badge.fury.io/rb/u2f)
+[![Dependency Status](https://gemnasium.com/userbin/ruby-u2f.svg)](https://gemnasium.com/userbin/ruby-u2f)
+[![security](https://hakiri.io/github/userbin/ruby-u2f/master.svg)](https://hakiri.io/github/userbin/ruby-u2f/master)
+
 [![Build Status](https://travis-ci.org/userbin/ruby-u2f.png)](https://travis-ci.org/userbin/ruby-u2f)
 [![Code Climate](https://codeclimate.com/github/userbin/ruby-u2f/badges/gpa.svg)](https://codeclimate.com/github/userbin/ruby-u2f)
 [![Coverage Status](https://img.shields.io/coveralls/userbin/ruby-u2f.svg)](https://coveralls.io/r/userbin/ruby-u2f)
-[![security](https://hakiri.io/github/userbin/ruby-u2f/master.svg)](https://hakiri.io/github/userbin/ruby-u2f/master)
 
 Provides functionality for working with the server side aspects of the U2F
 protocol as defined in the [FIDO specifications](http://fidoalliance.org/specifications/download). To read more about U2F and how to use a U2F library, visit [developers.yubico.com/U2F](http://developers.yubico.com/U2F).
