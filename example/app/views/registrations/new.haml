@@ -1,15 +1,44 @@
+.row
+  .col-md-4.col-md-offset-4.page-header
+    %h2 Register key
+.row
+  .col-md-4.col-md-offset-4
+    %p.lead
+      Please insert the key and press the button within 15 seconds
+    %p#waiting.text-center.text-success.well
+      Waiting...
+    %p#error.alert.alert-danger{style: 'display: none;'}
+.row
+  .col-md-4.col-md-offset-4
+    %p
+      %a{:href => '/'} &laquo; Back to main page
+
 = form_tag '/registrations', method: 'post' do
   = hidden_field_tag :response
 
 :javascript
   var registerRequests = #{@registration_requests.to_json.html_safe};
   var signRequests = #{@sign_requests.to_json.html_safe};
+  var $waiting = document.getElementById('waiting');
+  var $error = document.getElementById('error');
+  var errorMap = {
+    1: 'Unknown error, try again',
+    2: "Bad request error, try again" ,
+    3: "This key isn't supported, please try another one",
+    4: 'The device is already registered, please login',
+    5: 'Authentication timed out. Please reload to try again.'
+  };
+  var setError = function(code) {
+    $waiting.style.display = 'none';
+    $error.style.display = 'block';
+    $error.innerHTML = errorMap[code];
+  };
 
   u2f.register(registerRequests, signRequests, function(registerResponse) {
     var form, reg;
 
     if (registerResponse.errorCode) {
-      return alert("Registration error: " + registerResponse.errorCode);
+      return setError(registerResponse.errorCode);
     }
 
     form = document.forms[0];
@@ -18,4 +47,4 @@
     response.value = JSON.stringify(registerResponse);
 
     form.submit();
-  });
+  }, 15);

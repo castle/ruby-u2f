@@ -17,4 +17,4 @@ gem 'dm-core'
 # Padrino Stable Gem
 gem 'padrino', '0.12.4'
 
-gem 'u2f', path: '../.'
+gem 'u2f'#, path: '../.'

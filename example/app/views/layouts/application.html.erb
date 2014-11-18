@@ -10,7 +10,11 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <%= stylesheet_link_tag 'normalize', 'application' %>
+    <%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' %>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+      body { font-family: 'Source Sans Pro', sans-serif; }
+    </style>
     <script src="chrome-extension://pfboblefjcgdjicmnffhdgionmgcdmne/u2f-api.js"></script>
     <%= javascript_include_tag 'application' %>
   </head>
@@ -18,9 +22,9 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <%= yield %>
-
+    <div class="container">
+      <%= yield %>
+    </div>
     <!-- TODO: warn if u2f can be found -->
   </body>
 </html>

@@ -4,7 +4,7 @@ module U2FExample
     enable :sessions
 
     get "/" do
-      redirect url(:registrations, :new)
+      render 'index'
     end
   end
 end

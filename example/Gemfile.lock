@@ -1,8 +1,3 @@
-PATH
-  remote: ../.
-  specs:
-    u2f (0.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -113,6 +108,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    u2f (0.0.1)
     url_mount (0.2.1)
       rack
     uuidtools (2.1.5)
@@ -132,4 +128,4 @@ DEPENDENCIES
   haml
   padrino (= 0.12.4)
   rake
-  u2f!
+  u2f

@@ -1,14 +1,42 @@
+.row
+  .col-md-4.col-md-offset-4.page-header
+    %h2 Validate key
+.row
+  .col-md-4.col-md-offset-4
+    %p.lead
+      Please insert a registered key and press the button within 15 seconds
+    %p#waiting.text-center.text-success.well
+      Waiting...
+    %p#error.alert.alert-danger{style: 'display: none;'}
+.row
+  .col-md-4.col-md-offset-4
+    %p
+      %a{:href => '/'} &laquo; Back to main page
+
+
 = form_tag '/authentications', method: 'post' do
   = hidden_field_tag :response
 
 :javascript
   var signRequests = #{@sign_requests.to_json.html_safe};
+  var errorMap = {
+    1: 'Unknown error, try again',
+    2: "Bad request error, try again" ,
+    3: "This key isn't supported, please try another one",
+    4: 'The device is already registered, please login',
+    5: 'Authentication timed out. Please reload to try again.'
+  };
+  var setError = function(code) {
+    $waiting.style.display = 'none';
+    $error.style.display = 'block';
+    $error.innerHTML = errorMap[code];
+  };
 
   u2f.sign(signRequests, function(signResponse) {
     var form, reg;
 
     if (signResponse.errorCode) {
-      return alert("Authentication error: " + signResponse.errorCode);
+      return setError(signResponse.errorCode);
     }
 
     form = document.forms[0];
