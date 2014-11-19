@@ -15,7 +15,7 @@ U2FExample::App.controllers :registrations do
     reg = begin
       u2f.register!(session[:challenges], response)
     rescue U2F::Error => e
-      return "Unable to register: #{e.class.name}"
+      @error_message = "Unable to register: #{e.class.name}"
     ensure
       session.delete(:challenges)
     end
@@ -25,6 +25,6 @@ U2FExample::App.controllers :registrations do
                          public_key:  reg.public_key,
                          counter:     reg.counter)
 
-    'Registered!'
+    render 'authentications/show'
   end
 end

@@ -1,0 +1,13 @@
+.row
+  .col-md-4.col-md-offset-4.page-header.text-center
+    %h2= @error_message ? 'Failed' : 'Success'
+.row
+  .col-md-4.col-md-offset-4.text-center
+    %p.lead
+      %span.glyphicon{style: 'font-size: 64px;', class: @error_message ? 'text-danger glyphicon-remove' : 'text-success glyphicon-ok'}
+    %p= @error_message ? @error_message : 'Successfully authenticated'
+.row
+  .col-md-4.col-md-offset-4.text-center
+    %hr
+    %p
+      %a{:href => '/'} &laquo; Back to main page

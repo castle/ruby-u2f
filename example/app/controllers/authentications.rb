@@ -1,3 +1,4 @@
+require 'base64'
 U2FExample::App.controllers :authentications do
   get :new do
     key_handles = Registration.map(&:key_handle)
@@ -17,15 +18,16 @@ U2FExample::App.controllers :authentications do
 
     begin
       u2f.authenticate!(session[:challenges], response,
-                        registration.public_key, registration.counter)
+                        Base64.decode64(registration.public_key),
+                        registration.counter)
     rescue U2F::Error => e
-      return "Unable to authenticate: #{e.class.name}"
+      @error_message = "Unable to authenticate: #{e.class.name}"
     ensure
       session.delete(:challenges)
     end
 
     registration.update(counter: response.counter)
 
-    'Authenticated!'
+    render 'authentications/show'
   end
 end
