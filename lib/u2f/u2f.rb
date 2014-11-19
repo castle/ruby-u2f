@@ -69,9 +69,10 @@ module U2F
       # Validate public key
       U2F.public_key_pem(response.public_key_raw)
 
-      unless U2F.validate_certificate(response.certificate_raw)
-        fail AttestationVerificationError
-      end
+      # TODO:
+      # unless U2F.validate_certificate(response.certificate_raw)
+      #   fail AttestationVerificationError
+      # end
 
       fail AttestationSignatureError unless response.verify(app_id)
 
@@ -102,9 +103,8 @@ module U2F
       pem
     end
 
-    def self.validate_certificate(certificate_raw)
+    # def self.validate_certificate(_certificate_raw)
       # TODO
-      return true
       # cacert = OpenSSL::X509::Certificate.new()
       # cert = OpenSSL::X509::Certificate.new(certificate_raw)
       # cert.verify(cacert.public_key)
