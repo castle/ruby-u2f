@@ -6,12 +6,12 @@ module U2F
       data = ::JSON.parse(json)
       instance = new
       instance.client_data_json =
-        Base64.urlsafe_decode64(data['clientData'])
+        ::U2F.urlsafe_decode64(data['clientData'])
       instance.client_data =
         ClientData.load_from_json(instance.client_data_json)
       instance.key_handle = data['keyHandle']
       instance.signature_data =
-        Base64.urlsafe_decode64(data['signatureData'])
+        ::U2F.urlsafe_decode64(data['signatureData'])
       instance
     end
 

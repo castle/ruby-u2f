@@ -118,7 +118,7 @@ describe U2F do
     end
 
     context 'with incorrect key' do
-      let(:public_key) { Base64.urlsafe_decode64('NW5jdzdnODV3dm9nNzU4d2duNTd3') }
+      let(:public_key) { U2F.urlsafe_decode64('NW5jdzdnODV3dm9nNzU4d2duNTd3') }
       it 'fails when key is to short' do
         expect {
           U2F::U2F.public_key_pem public_key

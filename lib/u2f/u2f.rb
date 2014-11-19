@@ -108,6 +108,18 @@ module U2F
       # cacert = OpenSSL::X509::Certificate.new()
       # cert = OpenSSL::X509::Certificate.new(certificate_raw)
       # cert.verify(cacert.public_key)
+    # end
+  end
+
+  ##
+  # Variant of Base64::urlsafe_base64 which adds padding if necessary
+  def self.urlsafe_decode64(string)
+    string = case string.length % 4
+      when 2 then string + '=='
+      when 3 then string + '='
+      else
+        string
     end
+    Base64.urlsafe_decode64(string)
   end
 end
