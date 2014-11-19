@@ -76,7 +76,7 @@ module U2F
     ##
     # Returns the key handle from registration data, URL safe base64 encoded
     def key_handle
-      Base64.urlsafe_encode64(key_handle_raw)
+      ::U2F.urlsafe_encode64(key_handle_raw)
     end
 
     def key_handle_raw

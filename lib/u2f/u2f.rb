@@ -43,7 +43,7 @@ module U2F
     ##
     # Generates a 32 byte long random U2F challenge
     def challenge
-      Base64.urlsafe_encode64(SecureRandom.random_bytes(32))
+      ::U2F.urlsafe_encode64(SecureRandom.random_bytes(32))
     end
 
     ##
@@ -112,7 +112,7 @@ module U2F
   end
 
   ##
-  # Variant of Base64::urlsafe_base64 which adds padding if necessary
+  # Variant of Base64::urlsafe_decode64 which adds padding if necessary
   def self.urlsafe_decode64(string)
     string = case string.length % 4
       when 2 then string + '=='
@@ -121,5 +121,11 @@ module U2F
         string
     end
     Base64.urlsafe_decode64(string)
+  end
+
+  ##
+  # Variant of Base64::urlsafe_encode64 which removes padding
+  def self.urlsafe_encode64(string)
+    Base64.urlsafe_encode64(string).gsub('=', '')
   end
 end
