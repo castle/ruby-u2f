@@ -28,49 +28,19 @@ module U2F
     ##
     # The attestation certificate in Base64 encoded X.509 DER format
     def certificate
-      Base64.strict_encode64(certificate_raw)
+      Base64.strict_encode64(parsed_certificate.to_der)
+    end
+
+    ##
+    # The parsed attestation certificate
+    def parsed_certificate
+      OpenSSL::X509::Certificate.new(certificate_bytes)
     end
 
     ##
     # Length of the attestation certificate
     def certificate_length
-      # http://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One#Example_encoded_in_DER
-      #
-      # Do some quick parsing of the certificate DER format.
-      # First bytes (TLV) could be ex:
-      # T 0x30: SEQUENCE Tag
-      # L 0x82: Length (2 length bytes)
-      #   0x02 0xe2: Two bytes indicated by the L byte.
-      #              Makes up the data length 738 (which makes 742 in total)
-
-      t_byte = certificate_bytes(0)
-
-      fail AttestationDecodeError unless t_byte == "\x30"
-
-      l_byte = certificate_bytes(1).unpack('c').first # 8-bit signed integer
-      # If the L-byte has MSB set to 1 (ie. < 0) the value will tell how many
-      # following bytes is used to describe the total length. Otherwise it will
-      # describe the data length
-      # http://msdn.microsoft.com/en-us/library/windows/desktop/bb648641(v=vs.85).aspx
-
-      nbr_length_bytes = 0
-      cert_length = if l_byte < 0
-        nbr_length_bytes = l_byte + 0x80 # last 7-bits is the number of bytes
-        length_bytes = certificate_bytes(2, nbr_length_bytes).unpack('C*')
-        length_bytes.reverse.each_with_index.inject(0) do |sum, (val, idx)|
-          sum + (val << (8*idx))
-        end
-      else
-        l_byte
-      end
-
-      cert_length + nbr_length_bytes + 2 # Make up for the T and L bytes them selves
-    end
-
-    ##
-    # The attestation certificate in X.509 DER format
-    def certificate_raw
-      certificate_bytes(0, certificate_length)
+      parsed_certificate.to_der.bytesize
     end
 
     ##
@@ -108,7 +78,7 @@ module U2F
     end
 
     ##
-    # Verifies the registration data agains the app id
+    # Verifies the registration data against the app id
     def verify(app_id)
       # Chapter 4.3 in
       # http://fidoalliance.org/specs/fido-u2f-raw-message-formats-v1.0-rd-20141008.pdf
@@ -120,15 +90,14 @@ module U2F
         public_key_raw
       ].join
 
-      cert = OpenSSL::X509::Certificate.new(certificate_raw)
-      cert.public_key.verify(OpenSSL::Digest::SHA256.new, signature, data)
+      parsed_certificate.public_key.verify(OpenSSL::Digest::SHA256.new, signature, data)
     end
 
     private
 
-    def certificate_bytes(offset, length = 1)
+    def certificate_bytes
       base_offset = KEY_HANDLE_OFFSET + key_handle_length
-      registration_data_raw.byteslice(base_offset + offset, length)
+      registration_data_raw.byteslice(base_offset..-1)
     end
   end
 end
