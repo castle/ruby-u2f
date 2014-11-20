@@ -1,4 +1,6 @@
 module U2F
+  ##
+  # Extension of +Array+ which implements a +to_json+ serializer
   class Collection < Array
     def initialize(array)
       super([*array])

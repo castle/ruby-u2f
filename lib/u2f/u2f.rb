@@ -1,12 +1,23 @@
 module U2F
   class U2F
     attr_accessor :app_id
+    ##
+    # * *Args*:
+    #   - +app_id+:: An application (facet) ID string
+    #
     def initialize(app_id)
       @app_id = app_id
     end
 
     ##
     # Generate data to be sent to the U2F device before authenticating
+    #
+    # * *Args*:
+    #   - +key_handles+:: +Array+ of previously registered U2F key handles
+    #
+    # * *Returns*:
+    #   - A +Collection+ of +SignRequest+ objects
+    #
     def authentication_requests(key_handles)
       key_handles = [key_handles] unless key_handles.is_a? Array
       sign_requests = key_handles.map do |key_handle|
@@ -17,6 +28,20 @@ module U2F
 
     ##
     # Authenticate a response from the U2F device
+    #
+    # * *Args*:
+    #   - +challenges+:: +Array+ of challenge strings
+    #   - +response+:: Response from the U2F device as a +SignResponse+ object
+    #   - +registration_public_key+:: Public key of the registered U2F device as binary string
+    #   - +registration_counter+:: +Integer+ with the current counter value of the registered device.
+    #
+    # * *Raises*:
+    #   - +NoMatchingRequestError+:: if the challenge in the response doesn't match any of the provided ones.
+    #   - +ClientDataTypeError+:: if the response is of the wrong type
+    #   - +AuthenticationFailedError+:: if the authentication failed
+    #   - +UserNotPresentError+:: if the user wasn't present during the authentication
+    #   - +CounterToLowError+:: if there is a counter mismatch between the registered one and the one in the response.
+    #
     def authenticate!(challenges, response, registration_public_key,
                       registration_counter)
       # Handle both single and Array input
@@ -42,12 +67,20 @@ module U2F
 
     ##
     # Generates a 32 byte long random U2F challenge
+    #
+    # * *Returns*:
+    #   - Base64 urlsafe encoded challenge
+    #
     def challenge
       ::U2F.urlsafe_encode64(SecureRandom.random_bytes(32))
     end
 
     ##
     # Generate data to be used when registering a U2F device
+    #
+    # * *Returns*:
+    #   - A +Collection+ of +RegisterRequest+ objects
+    #
     def registration_requests
       # TODO: generate a request for each supported version
       Collection.new(RegisterRequest.new(challenge, @app_id))
@@ -55,7 +88,19 @@ module U2F
 
     ##
     # Authenticate the response from the U2F device when registering
-    # Returns a registration object
+    #
+    # * *Args*:
+    #   - +challenges+:: +Array+ of challenge strings
+    #   - +response+:: Response of the U2F device as a +RegisterResponse+ object
+    #
+    # * *Returns*:
+    #   - A +Registration+ object
+    #
+    # * *Raises*:
+    #   - +UnmatchedChallengeError+:: if the challenge in the response doesn't match any of the provided ones.
+    #   - +ClientDataTypeError+:: if the response is of the wrong type
+    #   - +AttestationSignatureError+:: if the registration failed
+    #
     def register!(challenges, response)
       challenges = [challenges] unless challenges.is_a? Array
       challenge = challenges.detect do |chg|
@@ -86,6 +131,15 @@ module U2F
 
     ##
     # Convert a binary public key to PEM format
+    # * *Args*:
+    #   - +key+:: Binary public key
+    #
+    # * *Returns*:
+    #   - A base64 encoded public key +String+ in PEM format
+    #
+    # * *Raises*:
+    #   - +PublicKeyDecodeError+:: if the +key+ argument is incorrect
+    #
     def self.public_key_pem(key)
       fail PublicKeyDecodeError unless key.length == 65 || key[0] == "\x04"
       # http://tools.ietf.org/html/rfc5480
@@ -113,6 +167,7 @@ module U2F
 
   ##
   # Variant of Base64::urlsafe_decode64 which adds padding if necessary
+  #
   def self.urlsafe_decode64(string)
     string = case string.length % 4
       when 2 then string + '=='
@@ -125,7 +180,8 @@ module U2F
 
   ##
   # Variant of Base64::urlsafe_encode64 which removes padding
+  #
   def self.urlsafe_encode64(string)
-    Base64.urlsafe_encode64(string).gsub('=', '')
+    Base64.urlsafe_encode64(string).delete('=')
   end
 end
