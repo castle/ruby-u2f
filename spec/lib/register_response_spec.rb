@@ -18,6 +18,10 @@ describe U2F::RegisterResponse do
     "{\"registrationData\":\"BQT2UXxw7PXHmN5nCj1M3Lq_sibfqQehZbuUV1Vxr1l0J1Gdcv7FEvnPofmrSN44_pz8-XAj7pOpqB79rOphJPf2QM8nt8Jtyyj9_XmZWZTQMg2UVHvrin_Jc4tMHY9QmyCNDmSU9_Bhb-Ei4u5GPgLrpF1TaEYQCqUHboqDKt4x524wggIbMIIBBaADAgECAgR1o_Z1MAsGCSqGSIb3DQEBCzAuMSwwKgYDVQQDEyNZdWJpY28gVTJGIFJvb3QgQ0EgU2VyaWFsIDQ1NzIwMDYzMTAgFw0xNDA4MDEwMDAwMDBaGA8yMDUwMDkwNDAwMDAwMFowKjEoMCYGA1UEAwwfWXViaWNvIFUyRiBFRSBTZXJpYWwgMTk3MzY3OTczMzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABBmjfkNqa2mXzVh2ZxuES5coCvvENxDMDLmfd-0ACG0Fu7wR4ZTjKd9KAuidySpfona5csGmlM0Te_Zu35h_wwujEjAQMA4GCisGAQQBgsQKAQIEADALBgkqhkiG9w0BAQsDggEBAb0tuI0-CzSxBg4cAlyD6UyT4cKyJZGVhWdtPgj_mWepT3Tu9jXtdgA5F3jfZtTc2eGxuS-PPvqRAkZd40AXgM8A0YaXPwlT4s0RUTY9Y8aAQzQZeAHuZk3lKKd_LUCg5077dzdt90lC5eVTEduj6cOnHEqnOr2Cv75FuiQXX7QkGQxtoD-otgvhZ2Fjk29o7Iy9ik7ewHGXOfoVw_ruGWi0YfXBTuqEJ6H666vvMN4BZWHtzhC0k5ceQslB9Xdntky-GQgDqNkkBf32GKwAFT9JJrkO2BfsB-wfBrTiHr0AABYNTNKTceA5dtR3UVpI492VUWQbY3YmWUUfKTI7fM4wRgIhAIfEKaF0w43L3RJHXp8qeRKw8Ek0CVcZ6pvBsH3Wo3F1AiEA5w89AFOBrjoSsnuGdUgB4AGxc5bRnV-p8jGUNoVSUwI\",\"version\":\"U2F_V2\",\"challenge\":\"oqDO4u_tTvhm1LhFDVYhFwywQF0PzFsXPgjD-5lKGDY\",\"appId\":\"http://localhost:3000\",\"clientData\":\"eyJ0eXAiOiJuYXZpZ2F0b3IuaWQuZmluaXNoRW5yb2xsbWVudCIsImNoYWxsZW5nZSI6Im9xRE80dV90VHZobTFMaEZEVlloRnd5d1FGMFB6RnNYUGdqRC01bEtHRFk9Iiwib3JpZ2luIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiY2lkX3B1YmtleSI6IiJ9\"}"
   }
 
+  let(:error_response) {
+    "{\"errorCode\":4}"
+  }
+
   let(:app_id) { 'http://demo.example.com' }
   let(:challenge) { 'yKA0x075tjJ-GE7fKTfnzTOSaNUOWQxRd9TWz5aFOg8' }
 
@@ -25,6 +29,17 @@ describe U2F::RegisterResponse do
 
   let(:register_response) do
     U2F::RegisterResponse.load_from_json(registration_data_json)
+  end
+
+  context 'with error response' do
+    let(:registration_data_json) { error_response }
+    it 'raises RegistrationError with code' do
+      expect {
+        register_response
+      }.to raise_error(U2F::RegistrationError) do |error|
+        expect(error.code).to eq(4)
+      end
+    end
   end
 
   context 'with unpadded response' do

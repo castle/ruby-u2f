@@ -15,6 +15,11 @@ module U2F
     def self.load_from_json(json)
       # TODO: validate
       data = JSON.parse(json)
+
+      if data['errorCode'] && data['errorCode'] > 0
+        fail RegistrationError, :code => data['errorCode']
+      end
+
       instance = new
       instance.client_data_json =
         ::U2F.urlsafe_decode64(data['clientData'])
