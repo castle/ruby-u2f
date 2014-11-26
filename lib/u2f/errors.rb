@@ -11,4 +11,22 @@ module U2F
   class CounterToLowError < Error; end
   class AuthenticationFailedError < Error; end
   class UserNotPresentError < Error;end
+
+  class RegistrationError < Error
+    CODES = {
+      1 => "OTHER_ERROR",
+      2 => "BAD_REQUEST",
+      3 => "CONFIGURATION_UNSUPPORTED",
+      4 => "DEVICE_INELIGIBLE",
+      5 => "TIMEOUT"
+    }
+
+    attr_reader :code
+
+    def initialize(options = {})
+      @code = options[:code]
+      message = options[:message] || "Token returned #{CODES[code]}"
+      super(message)
+    end
+  end
 end
