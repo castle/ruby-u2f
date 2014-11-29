@@ -16,14 +16,13 @@ module U2F
     #   - +key_handles+:: +Array+ of previously registered U2F key handles
     #
     # * *Returns*:
-    #   - A +Collection+ of +SignRequest+ objects
+    #   - An +Array+ of +SignRequest+ objects
     #
     def authentication_requests(key_handles)
       key_handles = [key_handles] unless key_handles.is_a? Array
-      sign_requests = key_handles.map do |key_handle|
+      key_handles.map do |key_handle|
         SignRequest.new(key_handle, challenge, app_id)
       end
-      Collection.new(sign_requests)
     end
 
     ##
@@ -79,11 +78,11 @@ module U2F
     # Generate data to be used when registering a U2F device
     #
     # * *Returns*:
-    #   - A +Collection+ of +RegisterRequest+ objects
+    #   - An +Array+ of +RegisterRequest+ objects
     #
     def registration_requests
       # TODO: generate a request for each supported version
-      Collection.new(RegisterRequest.new(challenge, @app_id))
+      [RegisterRequest.new(challenge, @app_id)]
     end
 
     ##
