@@ -10,8 +10,8 @@ module U2F
       }
     end
 
-    def to_json
-      ::JSON.dump(as_json)
+    def to_json(options = {})
+      ::JSON.pretty_generate(as_json, options)
     end
 
     def version
