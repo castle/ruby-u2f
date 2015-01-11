@@ -8,7 +8,7 @@ module U2F
   class AttestationSignatureError < Error; end
   class NoMatchingRequestError < Error; end
   class NoMatchingRegistrationError < Error; end
-  class CounterToLowError < Error; end
+  class CounterTooLowError < Error; end
   class AuthenticationFailedError < Error; end
   class UserNotPresentError < Error;end
 
