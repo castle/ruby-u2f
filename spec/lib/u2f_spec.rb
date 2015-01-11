@@ -61,8 +61,8 @@ describe U2F do
 
     context 'with incorrect counter' do
       let(:counter) { 1000 }
-      it 'raises CounterToLowError' do
-        expect { u2f_authenticate }.to raise_error(U2F::CounterToLowError)
+      it 'raises CounterTooLowError' do
+        expect { u2f_authenticate }.to raise_error(U2F::CounterTooLowError)
       end
     end
     context 'with incorrect counter' do

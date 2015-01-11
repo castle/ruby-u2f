@@ -39,7 +39,7 @@ module U2F
     #   - +ClientDataTypeError+:: if the response is of the wrong type
     #   - +AuthenticationFailedError+:: if the authentication failed
     #   - +UserNotPresentError+:: if the user wasn't present during the authentication
-    #   - +CounterToLowError+:: if there is a counter mismatch between the registered one and the one in the response.
+    #   - +CounterTooLowError+:: if there is a counter mismatch between the registered one and the one in the response.
     #
     def authenticate!(challenges, response, registration_public_key,
                       registration_counter)
@@ -60,7 +60,7 @@ module U2F
       fail UserNotPresentError unless response.user_present?
 
       unless response.counter > registration_counter
-        fail CounterToLowError
+        fail CounterTooLowError
       end
     end
 
