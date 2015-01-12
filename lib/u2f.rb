@@ -1,6 +1,7 @@
 require 'base64'
 require 'json'
 require 'openssl'
+require 'securerandom'
 
 require 'u2f/client_data'
 require 'u2f/errors'
