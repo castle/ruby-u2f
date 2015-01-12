@@ -84,8 +84,8 @@ Render a form that will be automatically posted when the U2F device reponds.
 
 ```javascript
 // render requests from server into Javascript format
-var registerRequests = <%= @registration_requests.to_json.html_safe %>;
-var signRequests = <%= @sign_requests.to_json.html_safe %>;
+var registerRequests = <%= @registration_requests.as_json.to_json.html_safe %>;
+var signRequests = <%= @sign_requests.as_json.to_json.html_safe %>;
 
 u2f.register(registerRequests, signRequests, function(registerResponse) {
   var form, reg;
@@ -160,7 +160,7 @@ Render a form that will be automatically posted when the U2F device reponds.
 
 ```javascript
 // render requests from server into Javascript format
-var signRequests = <%= @sign_requests.to_json.html_safe %>;
+var signRequests = <%= @sign_requests.as_json.to_json.html_safe %>;
 
 u2f.sign(signRequests, function(signResponse) {
   var form, reg;
