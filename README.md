@@ -1,12 +1,12 @@
 # Ruby U2F
 
 [![Gem Version](https://badge.fury.io/rb/u2f.png)](http://badge.fury.io/rb/u2f)
-[![Dependency Status](https://gemnasium.com/userbin/ruby-u2f.svg)](https://gemnasium.com/userbin/ruby-u2f)
-[![security](https://hakiri.io/github/userbin/ruby-u2f/master.svg)](https://hakiri.io/github/userbin/ruby-u2f/master)
+[![Dependency Status](https://gemnasium.com/castle/ruby-u2f.svg)](https://gemnasium.com/userbin/ruby-u2f)
+[![security](https://hakiri.io/github/castle/ruby-u2f/master.svg)](https://hakiri.io/github/userbin/ruby-u2f/master)
 
-[![Build Status](https://travis-ci.org/userbin/ruby-u2f.png)](https://travis-ci.org/userbin/ruby-u2f)
-[![Code Climate](https://codeclimate.com/github/userbin/ruby-u2f/badges/gpa.svg)](https://codeclimate.com/github/userbin/ruby-u2f)
-[![Coverage Status](https://img.shields.io/coveralls/userbin/ruby-u2f.svg)](https://coveralls.io/r/userbin/ruby-u2f)
+[![Build Status](https://travis-ci.org/castle/ruby-u2f.png)](https://travis-ci.org/userbin/ruby-u2f)
+[![Code Climate](https://codeclimate.com/github/castle/ruby-u2f/badges/gpa.svg)](https://codeclimate.com/github/userbin/ruby-u2f)
+[![Coverage Status](https://img.shields.io/coveralls/castle/ruby-u2f.svg)](https://coveralls.io/r/userbin/ruby-u2f)
 
 Provides functionality for working with the server side aspects of the U2F
 protocol as defined in the [FIDO specifications](http://fidoalliance.org/specifications/download). To read more about U2F and how to use a U2F library, visit [developers.yubico.com/U2F](http://developers.yubico.com/U2F).
@@ -17,7 +17,7 @@ U2F is an open 2-factor authentication standard that enables keychain devices, m
 
 ## Working example application
 
-Check out the [example](https://github.com/userbin/ruby-u2f/tree/master/example) directory for a fully working Padrino server demonstrating U2F.
+Check out the [example](https://github.com/castle/ruby-u2f/tree/master/example) directory for a fully working Padrino server demonstrating U2F.
 
 ## Installation
 
@@ -42,7 +42,7 @@ The U2F library has two major tasks:
 
 Each task starts by generating a challenge on the server, which is rendered to a web view, read by the browser API:s and transmitted to the plugged in U2F devices for verification. The U2F device responds and triggers a callback in the browser, and a form is posted back to your server where you verify the challenge and store the U2F device information to your database.
 
-You'll need an instance of `U2F:U2F`, which is conveniently placed in an [instance method](https://github.com/userbin/ruby-u2f/blob/master/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
+You'll need an instance of `U2F:U2F`, which is conveniently placed in an [instance method](https://github.com/castle/ruby-u2f/blob/master/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
 
 ```ruby
 def u2f
@@ -205,4 +205,4 @@ end
 
 ## License
 
-MIT License. Copyright (c) 2014 by Johan Brissmyr and Sebastian Wallin
+MIT License. Copyright (c) 2015 by Johan Brissmyr and Sebastian Wallin
