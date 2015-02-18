@@ -190,7 +190,8 @@ def create
 
   begin
     u2f.authenticate!(session[:challenges], response,
-                      registration.public_key, registration.counter)
+                      Base64.decode64(registration.public_key), 
+                      registration.counter)
   rescue U2F::Error => e
     return "Unable to authenticate: <%= e.class.name %>"
   ensure
