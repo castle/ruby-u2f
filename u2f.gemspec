@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.description = 'Library for handling registration and authentication of U2F devices'
   s.authors     = ['Johan Brissmyr', 'Sebastian Wallin']
   s.email       = ['brissmyr@gmail.com', 'sebastian.wallin@gmail.com']
-  s.homepage    = 'https://github.com/userbin/ruby-u2f'
+  s.homepage    = 'https://github.com/castle/ruby-u2f'
   s.license     = 'MIT'
 
   s.files       = Dir['{lib}/**/*'] + ['README.md']
