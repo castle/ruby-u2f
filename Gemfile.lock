@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    u2f (0.0.5)
+    u2f (0.1.0)
 
 GEM
   remote: https://rubygems.org/
