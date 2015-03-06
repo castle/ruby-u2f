@@ -19,6 +19,8 @@ U2F is an open 2-factor authentication standard that enables keychain devices, m
 
 Check out the [example](https://github.com/castle/ruby-u2f/tree/master/example) directory for a fully working Padrino server demonstrating U2F.
 
+There is another demo application available using the [Cuba](https://github.com/soveran/cuba) framework: [cuba-u2f-demo](https://github.com/badboy/cuba-u2f-demo) and a [blog post explaining the protocol and the implementation](http://fnordig.de/2015/03/06/u2f-demo-application/).
+
 ## Installation
 
 Add the `u2f` gem to your `Gemfile`
