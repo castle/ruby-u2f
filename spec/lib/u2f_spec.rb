@@ -117,8 +117,17 @@ describe U2F do
       end
     end
 
-    context 'with incorrect key' do
-      let(:public_key) { U2F.urlsafe_decode64('NW5jdzdnODV3dm9nNzU4d2duNTd3') }
+    context 'with invalid key' do
+      let(:public_key) { U2F.urlsafe_decode64('YV6FVSmH0ObY1cBRCsYJZ/CXF1gKsL+DW46rMfpeymtDZted2Ut2BraszUK1wg1+YJ4Bxt6r24WHNUYqKgeaSq8=') }
+      it 'fails when first byte of the key is not 0x04' do
+        expect {
+          U2F::U2F.public_key_pem public_key
+        }.to raise_error(U2F::PublicKeyDecodeError)
+      end
+    end
+
+    context 'with truncated key' do
+      let(:public_key) { U2F.urlsafe_decode64('BJhSPkR3Rmgl') }
       it 'fails when key is to short' do
         expect {
           U2F::U2F.public_key_pem public_key
