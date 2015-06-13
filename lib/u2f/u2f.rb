@@ -140,7 +140,7 @@ module U2F
     #   - +PublicKeyDecodeError+:: if the +key+ argument is incorrect
     #
     def self.public_key_pem(key)
-      fail PublicKeyDecodeError unless key.length == 65 || key[0] == "\x04"
+      fail PublicKeyDecodeError unless key.length == 65 && key[0] == "\x04"
       # http://tools.ietf.org/html/rfc5480
       der = OpenSSL::ASN1::Sequence([
         OpenSSL::ASN1::Sequence([
