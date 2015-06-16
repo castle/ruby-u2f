@@ -3,15 +3,18 @@ module U2F
   # A representation of ClientData, chapter 7
   # http://fidoalliance.org/specs/fido-u2f-raw-message-formats-v1.0-rd-20141008.pdf
   class ClientData
+    REGISTRATION_TYP   = "navigator.id.finishEnrollment".freeze
+    AUTHENTICATION_TYP = "navigator.id.getAssertion".freeze
+
     attr_accessor :typ, :challenge, :origin
     alias_method :type, :typ
 
     def registration?
-      typ == 'navigator.id.finishEnrollment'
+      typ == REGISTRATION_TYP
     end
 
     def authentication?
-      typ == 'navigator.id.getAssertion'
+      typ == AUTHENTICATION_TYP
     end
 
     def self.load_from_json(json)

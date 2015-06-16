@@ -1,7 +1,5 @@
 class U2F::FakeU2F
   CURVE_NAME   = "prime256v1".freeze
-  REGISTER_TYP = "navigator.id.finishEnrollment".freeze
-  AUTH_TYP     = "navigator.id.getAssertion".freeze
   DIGEST       = OpenSSL::Digest::SHA256
 
   attr_accessor :app_id, :counter, :key_handle_raw, :cert_subject
@@ -33,7 +31,7 @@ class U2F::FakeU2F
     if error
       JSON.dump(:errorCode => 4)
     else
-      client_data_json = client_data(REGISTER_TYP, challenge)
+      client_data_json = client_data(U2F::ClientData::REGISTRATION_TYP, challenge)
       JSON.dump(
         :registrationData => reg_registration_data(client_data_json),
         :clientData => U2F.urlsafe_encode64(client_data_json)
@@ -47,7 +45,7 @@ class U2F::FakeU2F
   #
   # Returns a JSON encoded Hash String.
   def sign_response(challenge)
-    client_data_json = client_data(AUTH_TYP, challenge)
+    client_data_json = client_data(U2F::ClientData::AUTHENTICATION_TYP, challenge)
     JSON.dump(
       :clientData => U2F.urlsafe_encode64(client_data_json),
       :keyHandle => U2F.urlsafe_encode64(key_handle_raw),
