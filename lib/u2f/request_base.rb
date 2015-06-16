@@ -2,7 +2,7 @@ module U2F
   module RequestBase
     attr_accessor :version, :challenge, :app_id
 
-    def as_json
+    def as_json(options = {})
       {
         version: version,
         challenge: challenge,

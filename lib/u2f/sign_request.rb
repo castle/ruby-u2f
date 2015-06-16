@@ -9,7 +9,7 @@ module U2F
       @app_id = app_id
     end
 
-    def as_json
+    def as_json(options = {})
       super.merge(keyHandle: key_handle)
     end
   end
