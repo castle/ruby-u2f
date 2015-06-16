@@ -1,6 +1,5 @@
 class U2F::FakeU2F
   CURVE_NAME   = "prime256v1".freeze
-  DIGEST       = OpenSSL::Digest::SHA256
 
   attr_accessor :app_id, :counter, :key_handle_raw, :cert_subject
 
@@ -97,12 +96,12 @@ class U2F::FakeU2F
   def reg_signature(client_data_json)
     payload = [
       "\x00",
-      DIGEST.digest(app_id),
-      DIGEST.digest(client_data_json),
+      U2F::DIGEST.digest(app_id),
+      U2F::DIGEST.digest(client_data_json),
       key_handle_raw,
       origin_public_key_raw
     ].join
-    cert_key.sign(DIGEST.new, payload)
+    cert_key.sign(U2F::DIGEST.new, payload)
   end
 
   # The signatureData field of a SignResponse Hash.
@@ -127,13 +126,13 @@ class U2F::FakeU2F
   # Returns an ECDSA signature String.
   def auth_signature(client_data_json)
     data = [
-      Digest::SHA256.digest(app_id),
+      U2F::DIGEST.digest(app_id),
       1, # User present
       counter,
-      Digest::SHA256.digest(client_data_json)
+      U2F::DIGEST.digest(client_data_json)
     ].pack("A32CNA32")
 
-    origin_key.sign(DIGEST.new, data)
+    origin_key.sign(U2F::DIGEST.new, data)
   end
 
   # The clientData hash as returned by registration and authentication
@@ -169,7 +168,7 @@ class U2F::FakeU2F
       c.public_key = cert_key
       c.serial = 0x1
       c.version = 0x0
-      c.sign cert_key, DIGEST.new
+      c.sign cert_key, U2F::DIGEST.new
     end
   end
 

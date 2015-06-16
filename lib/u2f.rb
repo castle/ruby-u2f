@@ -15,4 +15,5 @@ require 'u2f/fake_u2f'
 require 'u2f/u2f'
 
 module U2F
+  DIGEST = OpenSSL::Digest::SHA256
 end

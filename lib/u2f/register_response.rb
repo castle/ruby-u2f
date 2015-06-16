@@ -89,13 +89,13 @@ module U2F
       # http://fidoalliance.org/specs/fido-u2f-raw-message-formats-v1.0-rd-20141008.pdf
       data = [
         "\x00",
-        Digest::SHA256.digest(app_id),
-        Digest::SHA256.digest(client_data_json),
+        ::U2F::DIGEST.digest(app_id),
+        ::U2F::DIGEST.digest(client_data_json),
         key_handle_raw,
         public_key_raw
       ].join
 
-      parsed_certificate.public_key.verify(OpenSSL::Digest::SHA256.new, signature, data)
+      parsed_certificate.public_key.verify(::U2F::DIGEST.new, signature, data)
     end
 
     private
