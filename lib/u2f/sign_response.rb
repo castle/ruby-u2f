@@ -40,13 +40,13 @@ module U2F
     # registered device
     def verify(app_id, public_key_pem)
       data = [
-        Digest::SHA256.digest(app_id),
+        ::U2F::DIGEST.digest(app_id),
         signature_data.byteslice(0, 5),
-        Digest::SHA256.digest(client_data_json)
+        ::U2F::DIGEST.digest(client_data_json)
       ].join
 
       public_key = OpenSSL::PKey.read(public_key_pem)
-      public_key.verify(OpenSSL::Digest::SHA256.new, signature, data)
+      public_key.verify(::U2F::DIGEST.new, signature, data)
     end
   end
 end

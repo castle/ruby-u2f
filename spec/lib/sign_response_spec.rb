@@ -1,16 +1,15 @@
 require 'spec_helper.rb'
 
 describe U2F::SignResponse do
-  let(:json_response) do
-    '{ "signatureData": "AQAAAAQwRQIhAI6FSrMD3KUUtkpiP0jpIEakql-HNhwWFngyw553pS1CAiAKLjACPOhxzZXuZsVO8im-HStEcYGC50PKhsGp_SUAng==", "clientData": "eyAiY2hhbGxlbmdlIjogImZFbmM5b1Y3OUVhQmdLNUJvTkVSVTVnUEtNMlhHWVdyejRmVWpnYzBRN2ciLCAib3JpZ2luIjogImh0dHA6XC9cL2RlbW8uZXhhbXBsZS5jb20iLCAidHlwIjogIm5hdmlnYXRvci5pZC5nZXRBc3NlcnRpb24iIH0=", "keyHandle": "CTUayZo8hCBeC-sGQJChC0wW-bBg99bmOlGCgw8XGq4dLsxO3yWh9mRYArZxocP5hBB1pEGB3bbJYiM-5acc5w==" }'
-  end
-  let(:sign_response) do
-    U2F::SignResponse.load_from_json json_response
-  end
+  let(:app_id) { 'http://demo.example.com' }
+  let(:challenge) { U2F.urlsafe_encode64(SecureRandom.random_bytes(32)) }
+  let(:device) { U2F::FakeU2F.new(app_id) }
+  let(:json_response) { device.sign_response(challenge) }
+  let(:sign_response) { U2F::SignResponse.load_from_json json_response }
 
   describe '#counter' do
     subject { sign_response.counter }
-    it { is_expected.to be 4 }
+    it { is_expected.to be device.counter }
   end
 
   describe '#user_present?' do
