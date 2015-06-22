@@ -108,7 +108,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    u2f (0.0.2)
+    u2f (0.2.0)
     url_mount (0.2.1)
       rack
     uuidtools (2.1.5)
