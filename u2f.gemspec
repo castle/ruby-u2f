@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/castle/ruby-u2f'
   s.license     = 'MIT'
 
-  s.files       = Dir['{lib}/**/*'] + ['README.md']
+  s.files       = Dir['{lib}/**/*'] + ['README.md', 'LICENSE']
   s.test_files  = Dir['spec/**/*']
 
   s.add_development_dependency 'rake', '~> 10.3.2'
