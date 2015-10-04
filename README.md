@@ -21,18 +21,14 @@ Check out the [example](https://github.com/castle/ruby-u2f/tree/master/example) 
 
 There is another demo application available using the [Cuba](https://github.com/soveran/cuba) framework: [cuba-u2f-demo](https://github.com/badboy/cuba-u2f-demo) and a [blog post explaining the protocol and the implementation](http://fnordig.de/2015/03/06/u2f-demo-application/).
 
+You'll need Google Chrome 41 or later to use U2F.
+
 ## Installation
 
 Add the `u2f` gem to your `Gemfile`
 
 ```ruby
 gem 'u2f'
-```
-
-Currently, you need Google Chrome and the [FIDO U2F extension](https://chrome.google.com/webstore/detail/fido-u2f-universal-2nd-fa/pfboblefjcgdjicmnffhdgionmgcdmne) to enable U2F. To access the extension’s JavaScript API, add the script to the `<head>` section.
-
-```html
-<script src="chrome-extension://pfboblefjcgdjicmnffhdgionmgcdmne/u2f-api.js"></script>
 ```
 
 ## Usage
