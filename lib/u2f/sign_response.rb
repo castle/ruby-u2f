@@ -19,7 +19,7 @@ module U2F
     # Counter value that the U2F token increments every time it performs an
     # authentication operation
     def counter
-      signature_data[1..4].unpack('N').first
+      signature_data.byteslice(1, 4).unpack('N').first
     end
 
     ##
@@ -32,7 +32,7 @@ module U2F
     ##
     # If user presence was verified
     def user_present?
-      signature_data[0].unpack('C').first == 1
+      signature_data.byteslice(0).unpack('C').first == 1
     end
 
     ##
