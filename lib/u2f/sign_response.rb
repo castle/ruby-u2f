@@ -46,7 +46,12 @@ module U2F
       ].join
 
       public_key = OpenSSL::PKey.read(public_key_pem)
-      public_key.verify(::U2F::DIGEST.new, signature, data)
+
+      begin
+        public_key.verify(::U2F::DIGEST.new, signature, data)
+      rescue OpenSSL::PKey::PKeyError
+        false
+      end
     end
   end
 end

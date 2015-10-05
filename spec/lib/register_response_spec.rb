@@ -68,4 +68,17 @@ describe U2F::RegisterResponse do
     subject { register_response.verify(app_id) }
     it { is_expected.to be_truthy }
   end
+
+  describe '#verify with wrong app_id' do
+    subject { register_response.verify("other app") }
+    it { is_expected.to be_falsey }
+  end
+
+  describe '#verify with corrupted signature' do
+    subject { register_response }
+    it "returns falsey" do
+      allow(subject).to receive(:signature).and_return("bad signature")
+      expect(subject.verify(app_id)).to be_falsey
+    end
+  end
 end
