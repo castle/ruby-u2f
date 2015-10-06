@@ -60,7 +60,9 @@ module U2F
       fail UserNotPresentError unless response.user_present?
 
       unless response.counter > registration_counter
-        fail CounterTooLowError
+        unless response.counter == 0 && registration_counter == 0
+          fail CounterTooLowError
+        end
       end
     end
 
