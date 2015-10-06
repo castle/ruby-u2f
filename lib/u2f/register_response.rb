@@ -95,7 +95,11 @@ module U2F
         public_key_raw
       ].join
 
-      parsed_certificate.public_key.verify(::U2F::DIGEST.new, signature, data)
+      begin
+        parsed_certificate.public_key.verify(::U2F::DIGEST.new, signature, data)
+      rescue OpenSSL::PKey::PKeyError
+        false
+      end
     end
 
     private
