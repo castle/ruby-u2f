@@ -13,8 +13,12 @@ module U2F
     KEY_HANDLE_OFFSET = KEY_HANDLE_LENGTH_OFFSET + KEY_HANDLE_LENGTH_LENGTH
 
     def self.load_from_json(json)
-      # TODO: validate
-      data = JSON.parse(json)
+      fail ClientDataTypeError unless json.respond_to? :to_str
+      begin
+        data = JSON.parse(json)
+      rescue JSON::ParserError
+        fail ClientDataTypeError
+      end
 
       if data['errorCode'] && data['errorCode'] > 0
         fail RegistrationError, :code => data['errorCode']

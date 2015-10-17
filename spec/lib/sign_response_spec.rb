@@ -4,9 +4,29 @@ describe U2F::SignResponse do
   let(:app_id) { 'http://demo.example.com' }
   let(:challenge) { U2F.urlsafe_encode64(SecureRandom.random_bytes(32)) }
   let(:device) { U2F::FakeU2F.new(app_id) }
-  let(:json_response) { device.sign_response(challenge) }
-  let(:sign_response) { U2F::SignResponse.load_from_json json_response }
   let(:public_key_pem) { U2F::U2F.public_key_pem(device.origin_public_key_raw) }
+  let(:sign_data_json) { device.sign_response(challenge) }
+  let(:sign_response) do
+    U2F::SignResponse.load_from_json(sign_data_json)
+  end
+
+  context 'with nil value' do
+    let(:sign_data_json) { nil }
+    it 'raises ClientDataTypeError' do
+      expect {
+        sign_response
+      }.to raise_error(U2F::ClientDataTypeError)
+    end
+  end
+
+  context 'with empty string' do
+    let(:sign_data_json) { "" }
+    it 'raises ClientDataTypeError' do
+      expect {
+        sign_response
+      }.to raise_error(U2F::ClientDataTypeError)
+    end
+  end
 
   describe '#counter' do
     subject { sign_response.counter }

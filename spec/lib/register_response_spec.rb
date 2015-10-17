@@ -17,6 +17,24 @@ describe U2F::RegisterResponse do
     U2F::RegisterResponse.load_from_json(registration_data_json)
   end
 
+  context 'with nil value' do
+    let(:registration_data_json) { nil }
+    it 'raises ClientDataTypeError' do
+      expect {
+        register_response
+      }.to raise_error(U2F::ClientDataTypeError)
+    end
+  end
+
+  context 'with empty string' do
+    let(:registration_data_json) { "" }
+    it 'raises ClientDataTypeError' do
+      expect {
+        register_response
+      }.to raise_error(U2F::ClientDataTypeError)
+    end
+  end
+
   context 'with error response' do
     let(:registration_data_json) { error_response }
     it 'raises RegistrationError with code' do
