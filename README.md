@@ -40,7 +40,7 @@ The U2F library has two major tasks:
 
 Each task starts by generating a challenge on the server, which is rendered to a web view, read by the browser API:s and transmitted to the plugged in U2F devices for verification. The U2F device responds and triggers a callback in the browser, and a form is posted back to your server where you verify the challenge and store the U2F device information to your database.
 
-You'll need an instance of `U2F:U2F`, which is conveniently placed in an [instance method](https://github.com/castle/ruby-u2f/blob/master/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
+You'll need an instance of `U2F::U2F`, which is conveniently placed in an [instance method](https://github.com/castle/ruby-u2f/blob/master/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
 
 ```ruby
 def u2f
@@ -188,7 +188,7 @@ def create
 
   begin
     u2f.authenticate!(session[:challenges], response,
-                      Base64.decode64(registration.public_key), 
+                      Base64.decode64(registration.public_key),
                       registration.counter)
   rescue U2F::Error => e
     return "Unable to authenticate: <%= e.class.name %>"
