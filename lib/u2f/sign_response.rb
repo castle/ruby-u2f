@@ -29,10 +29,15 @@ module U2F
       signature_data.byteslice(5..-1)
     end
 
+    # Bit 0 being set to 1 indicates that the user is present. A different value
+    # of Bit 0, as well as Bits 1 through 7, are reserved for future use.
+    USER_PRESENCE_MASK = 0b00000001
+
     ##
     # If user presence was verified
     def user_present?
-      signature_data.byteslice(0).unpack('C').first == 1
+      byte = signature_data.byteslice(0).unpack('C').first
+      byte & USER_PRESENCE_MASK == 1
     end
 
     ##
