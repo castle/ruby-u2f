@@ -21,7 +21,7 @@ describe U2F do
     U2F::SignResponse.load_from_json sign_response_json
   end
   let(:sign_request) do
-    U2F::SignRequest.new(key_handle, auth_challenge, app_id)
+    U2F::SignRequest.new(key_handle)
   end
 
   describe '#authentication_requests' do

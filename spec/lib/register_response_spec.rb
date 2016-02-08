@@ -12,7 +12,7 @@ describe U2F::RegisterResponse do
     device.register_response(challenge).gsub(" ", "")
   end
   let(:error_response) { device.register_response(challenge, error = true) }
-  let(:registration_request) { U2F::RegisterRequest.new(challenge, app_id) }
+  let(:registration_request) { U2F::RegisterRequest.new(challenge) }
   let(:register_response) do
     U2F::RegisterResponse.load_from_json(registration_data_json)
   end
