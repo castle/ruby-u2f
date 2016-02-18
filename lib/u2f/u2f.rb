@@ -21,7 +21,7 @@ module U2F
     def authentication_requests(key_handles)
       key_handles = [key_handles] unless key_handles.is_a? Array
       key_handles.map do |key_handle|
-        SignRequest.new(key_handle, challenge, app_id)
+        SignRequest.new(key_handle)
       end
     end
 
@@ -41,13 +41,11 @@ module U2F
     #   - +UserNotPresentError+:: if the user wasn't present during the authentication
     #   - +CounterTooLowError+:: if there is a counter mismatch between the registered one and the one in the response.
     #
-    def authenticate!(challenges, response, registration_public_key,
+    def authenticate!(challenge, response, registration_public_key,
                       registration_counter)
-      # Handle both single and Array input
-      challenges = [challenges] unless challenges.is_a? Array
 
       # TODO: check that it's the correct key_handle as well
-      unless challenges.include?(response.client_data.challenge)
+      unless challenge == response.client_data.challenge
         fail NoMatchingRequestError
       end
 
@@ -84,7 +82,7 @@ module U2F
     #
     def registration_requests
       # TODO: generate a request for each supported version
-      [RegisterRequest.new(challenge, @app_id)]
+      [RegisterRequest.new(challenge)]
     end
 
     ##

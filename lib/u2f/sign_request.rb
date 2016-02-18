@@ -3,14 +3,15 @@ module U2F
     include RequestBase
     attr_accessor :key_handle
 
-    def initialize(key_handle, challenge, app_id)
+    def initialize(key_handle)
       @key_handle = key_handle
-      @challenge = challenge
-      @app_id = app_id
     end
 
     def as_json(options = {})
-      super.merge(keyHandle: key_handle)
+      {
+        version: version,
+        keyHandle: key_handle
+      }
     end
   end
 end

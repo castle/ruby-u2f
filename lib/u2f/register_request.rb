@@ -1,10 +1,17 @@
 module U2F
   class RegisterRequest
     include RequestBase
+    attr_accessor :challenge
 
-    def initialize(challenge, app_id)
+    def initialize(challenge)
       @challenge = challenge
-      @app_id = app_id
+    end
+
+    def as_json(options = {})
+      {
+        version: version,
+        challenge: challenge
+      }
     end
   end
 end
