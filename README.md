@@ -17,7 +17,7 @@ U2F is an open 2-factor authentication standard that enables keychain devices, m
 
 ## Working example application
 
-Check out the [example](https://github.com/castle/ruby-u2f/tree/master/example) directory for a fully working Padrino server demonstrating U2F.
+Check out the [example](https://github.com/castle/ruby-u2f/tree/API_v1_1/example) directory for a fully working Padrino server demonstrating U2F.
 
 There is another demo application available using the [Cuba](https://github.com/soveran/cuba) framework: [cuba-u2f-demo](https://github.com/badboy/cuba-u2f-demo) and a [blog post explaining the protocol and the implementation](http://fnordig.de/2015/03/06/u2f-demo-application/).
 
@@ -40,7 +40,7 @@ The U2F library has two major tasks:
 
 Each task starts by generating a challenge on the server, which is rendered to a web view, read by the browser APIs and transmitted to the plugged in U2F devices for verification. The U2F device responds and triggers a callback in the browser, and a form is posted back to your server where you verify the challenge and store the U2F device information to your database.
 
-You'll need an instance of `U2F::U2F`, which is conveniently placed in an [instance method](https://github.com/castle/ruby-u2f/blob/master/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
+You'll need an instance of `U2F::U2F`, which is conveniently placed in an [instance method](https://github.com/castle/ruby-u2f/blob/API_v1_1/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
 
 ```ruby
 def u2f
