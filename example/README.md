@@ -1,5 +1,5 @@
 ```bash
 bundle install
 padrino rake db:migrate
-padrino start
+thin start --ssl --ssl-disable-verify
 ```

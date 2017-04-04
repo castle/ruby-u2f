@@ -33,8 +33,10 @@
     $error.style.display = 'block';
     $error.innerHTML = errorMap[code];
   };
+  var appId = signRequests[0].appId
+  var challenge = signRequests[0].challenge
 
-  u2f.sign(signRequests, function(signResponse) {
+  u2f.sign(appId, challenge, signRequests, function(signResponse) {
     var form, reg;
 
     if (signResponse.errorCode) {

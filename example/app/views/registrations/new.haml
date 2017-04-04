@@ -33,8 +33,9 @@
     $error.style.display = 'block';
     $error.innerHTML = errorMap[code];
   };
+  var appId = registerRequests[0].appId
 
-  u2f.register(registerRequests, signRequests, function(registerResponse) {
+  u2f.register(appId, registerRequests, signRequests, function(registerResponse) {
     var form, reg;
 
     if (registerResponse.errorCode) {
