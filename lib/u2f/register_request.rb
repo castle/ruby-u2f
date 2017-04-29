@@ -7,7 +7,7 @@ module U2F
       @challenge = challenge
     end
 
-    def as_json(options = {})
+    def as_json(_options = {})
       {
         version: version,
         challenge: challenge

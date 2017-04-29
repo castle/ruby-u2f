@@ -46,20 +46,20 @@ module U2F
 
       # TODO: check that it's the correct key_handle as well
       unless challenge == response.client_data.challenge
-        fail NoMatchingRequestError
+        raise NoMatchingRequestError
       end
 
-      fail ClientDataTypeError unless response.client_data.authentication?
+      raise ClientDataTypeError unless response.client_data.authentication?
 
       pem = U2F.public_key_pem(registration_public_key)
 
-      fail AuthenticationFailedError unless response.verify(app_id, pem)
+      raise AuthenticationFailedError unless response.verify(app_id, pem)
 
-      fail UserNotPresentError unless response.user_present?
+      raise UserNotPresentError unless response.user_present?
 
       unless response.counter > registration_counter
-        unless response.counter == 0 && registration_counter == 0
-          fail CounterTooLowError
+        unless response.counter.zero? && registration_counter.zero?
+          raise CounterTooLowError
         end
       end
     end
@@ -106,9 +106,9 @@ module U2F
         chg == response.client_data.challenge
       end
 
-      fail UnmatchedChallengeError unless challenge
+      raise UnmatchedChallengeError unless challenge
 
-      fail ClientDataTypeError unless response.client_data.registration?
+      raise ClientDataTypeError unless response.client_data.registration?
 
       # Validate public key
       U2F.public_key_pem(response.public_key_raw)
@@ -118,14 +118,13 @@ module U2F
       #   fail AttestationVerificationError
       # end
 
-      fail AttestationSignatureError unless response.verify(app_id)
+      raise AttestationSignatureError unless response.verify(app_id)
 
-      registration = Registration.new(
+      Registration.new(
         response.key_handle,
         response.public_key,
         response.certificate
       )
-      registration
     end
 
     ##
