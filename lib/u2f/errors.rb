@@ -12,14 +12,16 @@ module U2F
   class AuthenticationFailedError < Error; end
   class UserNotPresentError < Error;end
 
+  # This error represents various potential errors that a user can come across
+  # while attempting to register.
   class RegistrationError < Error
     CODES = {
-      1 => "OTHER_ERROR",
-      2 => "BAD_REQUEST",
-      3 => "CONFIGURATION_UNSUPPORTED",
-      4 => "DEVICE_INELIGIBLE",
-      5 => "TIMEOUT"
-    }
+      1 => 'OTHER_ERROR',
+      2 => 'BAD_REQUEST',
+      3 => 'CONFIGURATION_UNSUPPORTED',
+      4 => 'DEVICE_INELIGIBLE',
+      5 => 'TIMEOUT'
+    }.freeze
 
     attr_reader :code
 

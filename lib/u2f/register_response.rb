@@ -17,7 +17,7 @@ module U2F
       data = JSON.parse(json)
 
       if data['errorCode'] && data['errorCode'] > 0
-        fail RegistrationError, :code => data['errorCode']
+        raise RegistrationError, code: data['errorCode']
       end
 
       instance = new

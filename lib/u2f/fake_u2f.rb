@@ -1,5 +1,6 @@
+# This class is for mocking a U2F device for testing purposes.
 class U2F::FakeU2F
-  CURVE_NAME   = "prime256v1".freeze
+  CURVE_NAME = 'prime256v1'.freeze
 
   attr_accessor :app_id, :counter, :key_handle_raw, :cert_subject
 
@@ -17,7 +18,7 @@ class U2F::FakeU2F
     @app_id = app_id
     @counter = options.fetch(:counter, 0)
     @key_handle_raw = options.fetch(:key_handle, SecureRandom.random_bytes(32))
-    @cert_subject = options.fetch(:cert_subject, "/CN=U2FTest")
+    @cert_subject = options.fetch(:cert_subject, '/CN=U2FTest')
   end
 
   # A registerResponse hash as returned by the u2f.register JavaScript API.
@@ -28,12 +29,12 @@ class U2F::FakeU2F
   # Returns a JSON encoded Hash String.
   def register_response(challenge, error = false)
     if error
-      JSON.dump(:errorCode => 4)
+      JSON.dump(errorCode: 4)
     else
       client_data_json = client_data(U2F::ClientData::REGISTRATION_TYP, challenge)
       JSON.dump(
-        :registrationData => reg_registration_data(client_data_json),
-        :clientData => U2F.urlsafe_encode64(client_data_json)
+        registrationData: reg_registration_data(client_data_json),
+        clientData: U2F.urlsafe_encode64(client_data_json)
       )
     end
   end
@@ -46,9 +47,9 @@ class U2F::FakeU2F
   def sign_response(challenge)
     client_data_json = client_data(U2F::ClientData::AUTHENTICATION_TYP, challenge)
     JSON.dump(
-      :clientData => U2F.urlsafe_encode64(client_data_json),
-      :keyHandle => U2F.urlsafe_encode64(key_handle_raw),
-      :signatureData => auth_signature_data(client_data_json)
+      clientData: U2F.urlsafe_encode64(client_data_json),
+      keyHandle: U2F.urlsafe_encode64(key_handle_raw),
+      signatureData: auth_signature_data(client_data_json)
     )
   end
 
@@ -115,7 +116,7 @@ class U2F::FakeU2F
         1, # User present
         self.counter += 1,
         auth_signature(client_data_json)
-      ].pack("CNA*")
+      ].pack('CNA*')
     )
   end
 
@@ -130,7 +131,7 @@ class U2F::FakeU2F
       1, # User present
       counter,
       U2F::DIGEST.digest(client_data_json)
-    ].pack("A32CNA32")
+    ].pack('A32CNA32')
 
     origin_key.sign(U2F::DIGEST.new, data)
   end
@@ -144,9 +145,9 @@ class U2F::FakeU2F
   # Returns a JSON encoded Hash String.
   def client_data(typ, challenge)
     JSON.dump(
-      :challenge => challenge,
-      :origin    => app_id,
-      :typ       => typ
+      challenge: challenge,
+      origin: app_id,
+      typ: typ
     )
   end
 
@@ -183,7 +184,7 @@ class U2F::FakeU2F
   #
   # Returns a OpenSSL::PKey::EC instance.
   def generate_ec_key
-    OpenSSL::PKey::EC.new().tap do |ec|
+    OpenSSL::PKey::EC.new.tap do |ec|
       ec.group = OpenSSL::PKey::EC::Group.new(CURVE_NAME)
       ec.generate_key
       # https://bugs.ruby-lang.org/issues/8177
