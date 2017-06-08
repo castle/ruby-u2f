@@ -20,4 +20,4 @@ gem 'padrino', '0.12.4'
 # To enable https
 gem 'thin'
 
-gem 'u2f'#, path: '../.'
+gem 'u2f', '1.0.0'

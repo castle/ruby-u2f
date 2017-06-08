@@ -4,8 +4,10 @@ U2FExample::App.controllers :authentications do
     key_handles = Registration.map(&:key_handle)
     return 'Need to register first' if key_handles.empty?
 
+    @app_id = u2f.app_id
     @sign_requests = u2f.authentication_requests(key_handles)
-    session[:challenges] = @sign_requests.map(&:challenge)
+    @challenge = u2f.challenge
+    session[:u2f_challenge] = @challenge
 
     render 'authentications/new'
   end
@@ -17,13 +19,13 @@ U2FExample::App.controllers :authentications do
     return 'Need to register first' unless registration
 
     begin
-      u2f.authenticate!(session[:challenges], response,
+      u2f.authenticate!(session[:u2f_challenge], response,
                         Base64.decode64(registration.public_key),
                         registration.counter)
     rescue U2F::Error => e
       @error_message = "Unable to authenticate: #{e.class.name}"
     ensure
-      session.delete(:challenges)
+      session.delete(:u2f_challenge)
     end
 
     registration.update(counter: response.counter)
