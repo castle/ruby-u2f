@@ -6,6 +6,8 @@ U2FExample::App.controllers :registrations do
     key_handles = Registration.map(&:key_handle)
     @sign_requests = u2f.authentication_requests(key_handles)
 
+    @app_id = u2f.app_id
+
     render 'registrations/new'
   end
 

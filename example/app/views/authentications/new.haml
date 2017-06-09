@@ -19,6 +19,8 @@
 
 :javascript
   var signRequests = #{@sign_requests.to_json.html_safe};
+  var challenge = #{@challenge.to_json.html_safe};
+  var appId = #{@app_id.to_json.html_safe};
   var $waiting = document.getElementById('waiting');
   var $error = document.getElementById('error');
   var errorMap = {
@@ -33,8 +35,6 @@
     $error.style.display = 'block';
     $error.innerHTML = errorMap[code];
   };
-  var appId = signRequests[0].appId
-  var challenge = signRequests[0].challenge
 
   u2f.sign(appId, challenge, signRequests, function(signResponse) {
     var form, reg;

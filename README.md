@@ -40,6 +40,8 @@ The U2F library has two major tasks:
 
 Each task starts by generating a challenge on the server, which is rendered to a web view, read by the browser APIs and transmitted to the plugged in U2F devices for verification. The U2F device responds and triggers a callback in the browser, and a form is posted back to your server where you verify the challenge and store the U2F device information to your database.
 
+Note that ordinarily, each user will have one or more U2F registrations (as it's a common usage pattern for users to have more than one U2F device -- for example one for regular use, and a second stored safely as a backup). While it's omitted from examples here for brevity, a new registration should typically be associated with the particular user registering. Likewise, when authenticating, queries over "all registrations" should actually be scoped to registrations associated with the particular user being authenticated.
+
 You'll need an instance of `U2F::U2F`, which is conveniently placed in an [instance method](https://github.com/castle/ruby-u2f/blob/API_v1_1/example/app/helpers/helpers.rb) on the controller. The initializer takes an **App ID** as argument.
 
 ```ruby
@@ -67,6 +69,8 @@ def new
   key_handles = Registration.map(&:key_handle)
   @sign_requests = u2f.authentication_requests(key_handles)
 
+  @app_id = u2f.app_id
+
   render 'registrations/new'
 end
 ```
@@ -82,10 +86,11 @@ Render a form that will be automatically posted when the U2F device reponds.
 
 ```javascript
 // render requests from server into Javascript format
-var registerRequests = <%= @registration_requests.as_json.to_json.html_safe %>;
+var appId = <%= @app_id.to_json.html_safe %>
+var registerRequests = <%= @registration_requests.to_json.html_safe %>;
 var signRequests = <%= @sign_requests.as_json.to_json.html_safe %>;
 
-u2f.register(registerRequests, signRequests, function(registerResponse) {
+u2f.register(appId, registerRequests, signRequests, function(registerResponse) {
   var form, reg;
 
   if (registerResponse.errorCode) {
@@ -138,10 +143,12 @@ def new
   return 'Need to register first' if key_handles.empty?
 
   # Generate SignRequests
+  @app_id = u2f.app_id
   @sign_requests = u2f.authentication_requests(key_handles)
+  @challenge = u2f.challenge
 
-  # Store challenges. We need them for the verification step
-  session[:challenges] = @sign_requests.map(&:challenge)
+  # Store challenge. We need it for the verification step
+  session[:challenge] = @challenge
 
   render 'authentications/new'
 end
@@ -158,9 +165,11 @@ Render a form that will be automatically posted when the U2F device reponds.
 
 ```javascript
 // render requests from server into Javascript format
-var signRequests = <%= @sign_requests.as_json.to_json.html_safe %>;
+var signRequests = <%= @sign_requests.to_json.html_safe %>;
+var challenge = <%= @challenge.to_json.html_safe %>;
+var appId = <%= @app_id.to_json.html_safe %>;
 
-u2f.sign(signRequests, function(signResponse) {
+u2f.sign(appId, challenge, signRequests, function(signResponse) {
   var form, reg;
 
   if (signResponse.errorCode) {
@@ -187,13 +196,13 @@ def create
   return 'Need to register first' unless registration
 
   begin
-    u2f.authenticate!(session[:challenges], response,
+    u2f.authenticate!(session[:challenge], response,
                       Base64.decode64(registration.public_key),
                       registration.counter)
   rescue U2F::Error => e
     return "Unable to authenticate: <%= e.class.name %>"
   ensure
-    session.delete(:challenges)
+    session.delete(:challenge)
   end
 
   registration.update(counter: response.counter)
