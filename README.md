@@ -166,8 +166,8 @@ Render a form that will be automatically posted when the U2F device reponds.
 ```javascript
 // render requests from server into Javascript format
 var signRequests = <%= @sign_requests.to_json.html_safe %>;
-var challenge = #{@challenge.to_json.html_safe};
-var appId = #{@app_id.to_json.html_safe};
+var challenge = <%= @challenge.to_json.html_safe %>;
+var appId = <%= @app_id.to_json.html_safe %>;
 
 u2f.sign(appId, challenge, signRequests, function(signResponse) {
   var form, reg;
