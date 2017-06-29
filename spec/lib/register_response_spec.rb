@@ -28,6 +28,17 @@ describe U2F::RegisterResponse do
     end
   end
 
+  context 'with invalid response' do
+    let(:registration_data_json) { '{}' }
+    t 'raises RegistrationError with code' do
+      expect {
+        register_response
+      }.to raise_error(U2F::RegistrationError) do |error|
+        expect(error.code).to eq(2)
+      end
+    end
+  end
+  
   context 'with unpadded response' do
     let(:registration_data_json) { registration_data_json_without_padding }
     it 'does not raise "invalid base64" exception' do
