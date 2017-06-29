@@ -30,7 +30,7 @@ describe U2F::RegisterResponse do
 
   context 'with invalid response' do
     let(:registration_data_json) { '{}' }
-    t 'raises RegistrationError with code' do
+    it 'raises RegistrationError with code' do
       expect {
         register_response
       }.to raise_error(U2F::RegistrationError) do |error|
