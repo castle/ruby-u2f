@@ -11,6 +11,7 @@ module U2F
     KEY_HANDLE_LENGTH_LENGTH = 1
     KEY_HANDLE_LENGTH_OFFSET = PUBLIC_KEY_OFFSET + PUBLIC_KEY_LENGTH
     KEY_HANDLE_OFFSET = KEY_HANDLE_LENGTH_OFFSET + KEY_HANDLE_LENGTH_LENGTH
+    BAD_REQUEST = 2
 
     def self.load_from_json(json)
       # TODO: validate
@@ -21,7 +22,7 @@ module U2F
       end
 
       if data['clientData'].blank? || data['registrationData'].blank?
-        raise RegistrationError, code: 2
+        raise RegistrationError, code: BAD_REQUEST
       end
       
       instance = new
