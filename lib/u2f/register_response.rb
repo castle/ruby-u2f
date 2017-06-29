@@ -21,7 +21,7 @@ module U2F
         raise RegistrationError, code: data['errorCode']
       end
 
-      if data['clientData'].blank? || data['registrationData'].blank?
+      if !data.key?('clientData') || !data.key?('registrationData')
         raise RegistrationError, code: BAD_REQUEST
       end
       
