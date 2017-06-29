@@ -20,6 +20,10 @@ module U2F
         raise RegistrationError, code: data['errorCode']
       end
 
+      if data['clientData'].blank? || data['registrationData'].blank?
+        raise RegistrationError, code: 2
+      end
+      
       instance = new
       instance.client_data_json =
         ::U2F.urlsafe_decode64(data['clientData'])
