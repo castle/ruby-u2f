@@ -34,7 +34,7 @@ describe U2F::RegisterResponse do
       expect {
         register_response
       }.to raise_error(U2F::RegistrationError) do |error|
-        expect(error.code).to eq(2)
+        expect(error.message).to eq('Invalid JSON')
       end
     end
   end
