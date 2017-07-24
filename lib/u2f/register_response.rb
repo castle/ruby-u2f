@@ -21,7 +21,7 @@ module U2F
       end
 
       if !data.key?('clientData') || !data.key?('registrationData')
-        raise RegistrationError, message: 'Invalid JSON'
+        raise RegistrationError, 'Invalid JSON'
       end
       
       instance = new
