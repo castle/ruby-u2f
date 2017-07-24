@@ -4,7 +4,7 @@ module U2F
 
     def self.load_from_json(json)
       data = ::JSON.parse(json)
-      if data['clientData'].nil? || data['keyHandle'].nil? || data['signatureData'].nil?
+      if data.key?('clientData') || data.key?('keyHandle') || data.key?('signatureData')
         raise Error, 'Missing required data'
       end
       
