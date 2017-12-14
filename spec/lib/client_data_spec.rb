@@ -8,33 +8,39 @@ describe U2F::ClientData do
   let(:authentication_type) { U2F::ClientData::AUTHENTICATION_TYP }
 
   let(:client_data) do
-    cd = U2F::ClientData.new
-    cd.typ = type
-    cd
+    described_class.new.tap do |cd|
+      cd.typ = type
+    end
   end
 
   describe '#registration?' do
     subject { client_data.registration? }
-    context 'for correct type' do
+
+    context 'with correct type' do
       let(:type) { registration_type }
+
       it { is_expected.to be_truthy }
     end
 
-    context 'for incorrect type' do
+    context 'with incorrect type' do
       let(:type) { authentication_type }
+
       it { is_expected.to be_falsey }
     end
   end
 
   describe '#authentication?' do
     subject { client_data.authentication? }
-    context 'for correct type' do
+
+    context 'with correct type' do
       let(:type) { authentication_type }
+
       it { is_expected.to be_truthy }
     end
 
-    context 'for incorrect type' do
+    context 'with incorrect type' do
       let(:type) { registration_type }
+
       it { is_expected.to be_falsey }
     end
   end
