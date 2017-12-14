@@ -20,6 +20,10 @@ module U2F
         raise RegistrationError, code: data['errorCode']
       end
 
+      if !data.key?('clientData') || !data.key?('registrationData')
+        raise RegistrationError, message: 'Invalid JSON'
+      end
+
       instance = new
       instance.client_data_json =
         ::U2F.urlsafe_decode64(data['clientData'])

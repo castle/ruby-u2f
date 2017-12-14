@@ -8,6 +8,17 @@ describe U2F::SignResponse do
   let(:sign_response) { U2F::SignResponse.load_from_json json_response }
   let(:public_key_pem) { U2F::U2F.public_key_pem(device.origin_public_key_raw) }
 
+  context 'with invalid response' do
+    let(:json_response) { '{}' }
+    it 'raises error' do
+      expect {
+        sign_response
+      }.to raise_error(U2F::Error) do |error|
+        expect(error.message).to eq('Missing required data')
+      end
+    end
+  end
+  
   describe '#counter' do
     subject { sign_response.counter }
     it { is_expected.to be device.counter }

@@ -4,6 +4,11 @@ module U2F
 
     def self.load_from_json(json)
       data = ::JSON.parse(json)
+      if !data.key?('clientData') || !data.key?('keyHandle') ||
+         !data.key?('signatureData')
+        raise Error, 'Missing required data'
+      end
+
       instance = new
       instance.client_data_json =
         ::U2F.urlsafe_decode64(data['clientData'])
