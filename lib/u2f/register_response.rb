@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   ##
   # Representation of a U2F registration response.

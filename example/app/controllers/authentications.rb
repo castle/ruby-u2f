@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'base64'
 U2FExample::App.controllers :authentications do
   get :new do

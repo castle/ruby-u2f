@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   class Error < StandardError; end
   class UnmatchedChallengeError < Error; end

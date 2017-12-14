@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   class U2F
     attr_accessor :app_id

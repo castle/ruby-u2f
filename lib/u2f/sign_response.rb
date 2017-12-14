@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   class SignResponse
     attr_accessor :client_data, :client_data_json, :key_handle, :signature_data

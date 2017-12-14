@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   class SignRequest
     include RequestBase

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This class is for mocking a U2F device for testing purposes.
 class U2F::FakeU2F
   CURVE_NAME = 'prime256v1'.freeze

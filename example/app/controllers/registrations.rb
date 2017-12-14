@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 U2FExample::App.controllers :registrations do
   get :new do
     @registration_requests = u2f.registration_requests
