@@ -3,7 +3,7 @@ module U2FExample
     register Padrino::Helpers
     enable :sessions
 
-    get "/" do
+    get '/' do
       render 'index'
     end
   end

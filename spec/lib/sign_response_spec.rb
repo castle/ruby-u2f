@@ -35,14 +35,14 @@ describe U2F::SignResponse do
   end
 
   describe '#verify with wrong app id' do
-    subject { sign_response.verify("other app", public_key_pem) }
+    subject { sign_response.verify('other app', public_key_pem) }
     it { is_expected.to be_falsey }
   end
 
   describe '#verify with corrupted signature' do
     subject { sign_response }
-    it "returns falsey" do
-      allow(subject).to receive(:signature).and_return("bad signature")
+    it 'returns falsey' do
+      allow(subject).to receive(:signature).and_return('bad signature')
       expect(subject.verify(app_id, public_key_pem)).to be_falsey
     end
   end

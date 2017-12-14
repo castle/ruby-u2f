@@ -9,7 +9,7 @@ describe U2F::RegisterResponse do
   let(:certificate) { Base64.strict_encode64(device.cert_raw) }
   let(:registration_data_json) { device.register_response(challenge) }
   let(:registration_data_json_without_padding) do
-    device.register_response(challenge).gsub(" ", "")
+    device.register_response(challenge).gsub(' ', '')
   end
   let(:error_response) { device.register_response(challenge, error = true) }
   let(:registration_request) { U2F::RegisterRequest.new(challenge) }
@@ -81,14 +81,14 @@ describe U2F::RegisterResponse do
   end
 
   describe '#verify with wrong app_id' do
-    subject { register_response.verify("other app") }
+    subject { register_response.verify('other app') }
     it { is_expected.to be_falsey }
   end
 
   describe '#verify with corrupted signature' do
     subject { register_response }
-    it "returns falsey" do
-      allow(subject).to receive(:signature).and_return("bad signature")
+    it 'returns falsey' do
+      allow(subject).to receive(:signature).and_return('bad signature')
       expect(subject.verify(app_id)).to be_falsey
     end
   end
