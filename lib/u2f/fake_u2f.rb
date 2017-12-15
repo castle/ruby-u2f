@@ -34,10 +34,10 @@ module U2F
       if error
         JSON.dump(errorCode: 4)
       else
-        client_data_json = client_data(U2F::ClientData::REGISTRATION_TYP, challenge)
+        client_data_json = client_data(::U2F::ClientData::REGISTRATION_TYP, challenge)
         JSON.dump(
           registrationData: reg_registration_data(client_data_json),
-          clientData: U2F.urlsafe_encode64(client_data_json)
+          clientData: ::U2F.urlsafe_encode64(client_data_json)
         )
       end
     end
@@ -48,10 +48,10 @@ module U2F
     #
     # Returns a JSON encoded Hash String.
     def sign_response(challenge)
-      client_data_json = client_data(U2F::ClientData::AUTHENTICATION_TYP, challenge)
+      client_data_json = client_data(::U2F::ClientData::AUTHENTICATION_TYP, challenge)
       JSON.dump(
-        clientData: U2F.urlsafe_encode64(client_data_json),
-        keyHandle: U2F.urlsafe_encode64(key_handle_raw),
+        clientData: ::U2F.urlsafe_encode64(client_data_json),
+        keyHandle: ::U2F.urlsafe_encode64(key_handle_raw),
         signatureData: auth_signature_data(client_data_json)
       )
     end
@@ -80,7 +80,7 @@ module U2F
     #
     # Returns a url-safe base64 encoded binary String.
     def reg_registration_data(client_data_json)
-      U2F.urlsafe_encode64(
+      ::U2F.urlsafe_encode64(
         [
           5,
           origin_public_key_raw,
@@ -100,12 +100,12 @@ module U2F
     def reg_signature(client_data_json)
       payload = [
         "\x00",
-        U2F::DIGEST.digest(app_id),
-        U2F::DIGEST.digest(client_data_json),
+        ::U2F::DIGEST.digest(app_id),
+        ::U2F::DIGEST.digest(client_data_json),
         key_handle_raw,
         origin_public_key_raw
       ].join
-      cert_key.sign(U2F::DIGEST.new, payload)
+      cert_key.sign(::U2F::DIGEST.new, payload)
     end
 
     # The signatureData field of a SignResponse Hash.
@@ -130,13 +130,13 @@ module U2F
     # Returns an ECDSA signature String.
     def auth_signature(client_data_json)
       data = [
-        U2F::DIGEST.digest(app_id),
+        ::U2F::DIGEST.digest(app_id),
         1, # User present
         counter,
-        U2F::DIGEST.digest(client_data_json)
+        ::U2F::DIGEST.digest(client_data_json)
       ].pack('A32CNA32')
 
-      origin_key.sign(U2F::DIGEST.new, data)
+      origin_key.sign(::U2F::DIGEST.new, data)
     end
 
     # The clientData hash as returned by registration and authentication
@@ -172,7 +172,7 @@ module U2F
         c.public_key = cert_key
         c.serial = 0x1
         c.version = 0x0
-        c.sign cert_key, U2F::DIGEST.new
+        c.sign cert_key, ::U2F::DIGEST.new
       end
     end
 
