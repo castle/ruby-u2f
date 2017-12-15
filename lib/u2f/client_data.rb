@@ -21,11 +21,11 @@ module U2F
 
     def self.load_from_json(json)
       client_data = ::JSON.parse(json)
-      instance = new
-      instance.typ = client_data['typ']
-      instance.challenge = client_data['challenge']
-      instance.origin = client_data['origin']
-      instance
+      new.tap do |instance|
+        instance.typ = client_data['typ']
+        instance.challenge = client_data['challenge']
+        instance.origin = client_data['origin']
+      end
     end
   end
 end

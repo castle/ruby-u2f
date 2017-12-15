@@ -26,14 +26,14 @@ module U2F
         raise RegistrationError, message: 'Invalid JSON'
       end
 
-      instance = new
-      instance.client_data_json =
-        ::U2F.urlsafe_decode64(data['clientData'])
-      instance.client_data =
-        ClientData.load_from_json(instance.client_data_json)
-      instance.registration_data_raw =
-        ::U2F.urlsafe_decode64(data['registrationData'])
-      instance
+      new.tap do |instance|
+        instance.client_data_json =
+          ::U2F.urlsafe_decode64(data['clientData'])
+        instance.client_data =
+          ClientData.load_from_json(instance.client_data_json)
+        instance.registration_data_raw =
+          ::U2F.urlsafe_decode64(data['registrationData'])
+      end
     end
 
     ##
