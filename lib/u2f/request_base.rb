@@ -2,8 +2,6 @@
 
 module U2F
   module RequestBase
-    attr_accessor :version
-
     def to_json(options = {})
       ::JSON.pretty_generate(as_json, options)
     end

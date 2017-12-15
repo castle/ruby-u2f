@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$:.push File.expand_path('../lib', __FILE__)
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 require 'version'
 
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.email       = ['brissmyr@gmail.com', 'sebastian.wallin@gmail.com']
   s.homepage    = 'https://github.com/castle/ruby-u2f'
   s.license     = 'MIT'
-  s.required_ruby_version = '>= 2.0.0'
+  s.required_ruby_version = '>= 2.1.0'
 
   s.files       = Dir['{lib}/**/*'] + ['README.md', 'LICENSE']
   s.test_files  = Dir['spec/**/*']

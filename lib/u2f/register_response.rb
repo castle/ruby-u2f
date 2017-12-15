@@ -85,7 +85,8 @@ module U2F
     # Returns the signature, extracted from the registration data
     def signature
       registration_data_raw.byteslice(
-        (KEY_HANDLE_OFFSET + key_handle_length + certificate_length)..-1)
+        (KEY_HANDLE_OFFSET + key_handle_length + certificate_length)..-1
+      )
     end
 
     ##
