@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 migration 1, :create_registrations do
   up do
     create_table :registrations do

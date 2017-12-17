@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   ##
   # Representation of a U2F registration response.
@@ -24,14 +26,14 @@ module U2F
         raise RegistrationError, message: 'Invalid JSON'
       end
 
-      instance = new
-      instance.client_data_json =
-        ::U2F.urlsafe_decode64(data['clientData'])
-      instance.client_data =
-        ClientData.load_from_json(instance.client_data_json)
-      instance.registration_data_raw =
-        ::U2F.urlsafe_decode64(data['registrationData'])
-      instance
+      new.tap do |instance|
+        instance.client_data_json =
+          ::U2F.urlsafe_decode64(data['clientData'])
+        instance.client_data =
+          ClientData.load_from_json(instance.client_data_json)
+        instance.registration_data_raw =
+          ::U2F.urlsafe_decode64(data['registrationData'])
+      end
     end
 
     ##
@@ -83,7 +85,8 @@ module U2F
     # Returns the signature, extracted from the registration data
     def signature
       registration_data_raw.byteslice(
-        (KEY_HANDLE_OFFSET + key_handle_length + certificate_length)..-1)
+        (KEY_HANDLE_OFFSET + key_handle_length + certificate_length)..-1
+      )
     end
 
     ##

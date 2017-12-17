@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Defines our constants
 RACK_ENV = ENV['RACK_ENV'] ||= 'development'  unless defined?(RACK_ENV)
 PADRINO_ROOT = File.expand_path('../..', __FILE__) unless defined?(PADRINO_ROOT)

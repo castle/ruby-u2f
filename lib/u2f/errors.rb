@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module U2F
-  class Error < StandardError;end
+  class Error < StandardError; end
   class UnmatchedChallengeError < Error; end
   class ClientDataTypeError < Error; end
   class PublicKeyDecodeError < Error; end
@@ -10,7 +12,7 @@ module U2F
   class NoMatchingRegistrationError < Error; end
   class CounterTooLowError < Error; end
   class AuthenticationFailedError < Error; end
-  class UserNotPresentError < Error;end
+  class UserNotPresentError < Error; end
 
   # This error represents various potential errors that a user can come across
   # while attempting to register.

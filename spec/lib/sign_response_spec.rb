@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper.rb'
 
 describe U2F::SignResponse do
@@ -5,45 +7,48 @@ describe U2F::SignResponse do
   let(:challenge) { U2F.urlsafe_encode64(SecureRandom.random_bytes(32)) }
   let(:device) { U2F::FakeU2F.new(app_id) }
   let(:json_response) { device.sign_response(challenge) }
-  let(:sign_response) { U2F::SignResponse.load_from_json json_response }
+  let(:sign_response) { described_class.load_from_json json_response }
   let(:public_key_pem) { U2F::U2F.public_key_pem(device.origin_public_key_raw) }
 
   context 'with invalid response' do
     let(:json_response) { '{}' }
-    it 'raises error' do
-      expect {
-        sign_response
-      }.to raise_error(U2F::Error) do |error|
+
+    it do
+      expect { sign_response }.to raise_error(U2F::Error) do |error|
         expect(error.message).to eq('Missing required data')
       end
     end
   end
-  
+
   describe '#counter' do
     subject { sign_response.counter }
+
     it { is_expected.to be device.counter }
   end
 
   describe '#user_present?' do
     subject { sign_response.user_present? }
+
     it { is_expected.to be true }
   end
 
   describe '#verify with correct app id' do
     subject { sign_response.verify(app_id, public_key_pem) }
-    it { is_expected.to be_truthy}
+
+    it { is_expected.to be_truthy }
   end
 
   describe '#verify with wrong app id' do
-    subject { sign_response.verify("other app", public_key_pem) }
+    subject { sign_response.verify('other app', public_key_pem) }
+
     it { is_expected.to be_falsey }
   end
 
   describe '#verify with corrupted signature' do
-    subject { sign_response }
-    it "returns falsey" do
-      allow(subject).to receive(:signature).and_return("bad signature")
-      expect(subject.verify(app_id, public_key_pem)).to be_falsey
-    end
+    subject { sign_response.verify(app_id, public_key_pem) }
+
+    before { allow(sign_response).to receive(:signature).and_return('bad signature') }
+
+    it { is_expected.to be_falsey }
   end
 end

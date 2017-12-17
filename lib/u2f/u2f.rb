@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   class U2F
     attr_accessor :app_id
@@ -113,11 +115,6 @@ module U2F
       # Validate public key
       U2F.public_key_pem(response.public_key_raw)
 
-      # TODO:
-      # unless U2F.validate_certificate(response.certificate_raw)
-      #   fail AttestationVerificationError
-      # end
-
       raise AttestationSignatureError unless response.verify(app_id)
 
       Registration.new(
@@ -139,28 +136,25 @@ module U2F
     #   - +PublicKeyDecodeError+:: if the +key+ argument is incorrect
     #
     def self.public_key_pem(key)
-      fail PublicKeyDecodeError unless key.bytesize == 65 && key.byteslice(0) == "\x04"
+      raise PublicKeyDecodeError unless key.bytesize == 65 && key.byteslice(0) == "\x04"
       # http://tools.ietf.org/html/rfc5480
-      der = OpenSSL::ASN1::Sequence([
-        OpenSSL::ASN1::Sequence([
-          OpenSSL::ASN1::ObjectId('1.2.840.10045.2.1'),  # id-ecPublicKey
-          OpenSSL::ASN1::ObjectId('1.2.840.10045.3.1.7') # secp256r1
-        ]),
-        OpenSSL::ASN1::BitString(key)
-      ]).to_der
+      der = OpenSSL::ASN1::Sequence(
+        [
+          OpenSSL::ASN1::Sequence(
+            [
+              OpenSSL::ASN1::ObjectId('1.2.840.10045.2.1'),  # id-ecPublicKey
+              OpenSSL::ASN1::ObjectId('1.2.840.10045.3.1.7') # secp256r1
+            ]
+          ),
+          OpenSSL::ASN1::BitString(key)
+        ]
+      ).to_der
 
       pem = "-----BEGIN PUBLIC KEY-----\r\n" +
             Base64.strict_encode64(der).scan(/.{1,64}/).join("\r\n") +
             "\r\n-----END PUBLIC KEY-----"
       pem
     end
-
-    # def self.validate_certificate(_certificate_raw)
-      # TODO
-      # cacert = OpenSSL::X509::Certificate.new()
-      # cert = OpenSSL::X509::Certificate.new(certificate_raw)
-      # cert.verify(cacert.public_key)
-    # end
   end
 
   ##
@@ -168,11 +162,10 @@ module U2F
   #
   def self.urlsafe_decode64(string)
     string = case string.length % 4
-      when 2 then string + '=='
-      when 3 then string + '='
-      else
-        string
-    end
+             when 2 then string + '=='
+             when 3 then string + '='
+             else string
+             end
     Base64.urlsafe_decode64(string)
   end
 

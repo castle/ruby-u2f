@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module U2F
   ##
   # A representation of a registered U2F device
