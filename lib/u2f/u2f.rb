@@ -31,7 +31,7 @@ module U2F
     # Authenticate a response from the U2F device
     #
     # * *Args*:
-    #   - +challenges+:: +Array+ of challenge strings
+    #   - +challenge+:: Challenge string
     #   - +response+:: Response from the U2F device as a +SignResponse+ object
     #   - +registration_public_key+:: Public key of the registered U2F device as binary string
     #   - +registration_counter+:: +Integer+ with the current counter value of the registered device.
