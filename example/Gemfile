@@ -17,7 +17,7 @@ gem 'dm-types'
 gem 'dm-core'
 
 # Padrino Stable Gem
-gem 'padrino', '0.12.4'
+gem 'padrino'
 
 # To enable https
 gem 'thin'

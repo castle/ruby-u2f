@@ -1,10 +1,9 @@
 # Ruby U2F
 
-[![Gem Version](https://badge.fury.io/rb/u2f.png)](http://badge.fury.io/rb/u2f)
-[![Dependency Status](https://gemnasium.com/castle/ruby-u2f.svg)](https://gemnasium.com/castle/ruby-u2f)
+[![Gem Version](https://badge.fury.io/rb/u2f.svg)](https://badge.fury.io/rb/u2f)
 [![security](https://hakiri.io/github/castle/ruby-u2f/master.svg)](https://hakiri.io/github/castle/ruby-u2f/master)
 
-[![Build Status](https://travis-ci.org/castle/ruby-u2f.png)](https://travis-ci.org/castle/ruby-u2f)
+[![Build Status](https://travis-ci.org/castle/ruby-u2f.svg?branch=API_v1_1)](https://travis-ci.org/castle/ruby-u2f)
 [![Code Climate](https://codeclimate.com/github/castle/ruby-u2f/badges/gpa.svg)](https://codeclimate.com/github/castle/ruby-u2f)
 [![Coverage Status](https://img.shields.io/coveralls/castle/ruby-u2f.svg)](https://coveralls.io/r/castle/ruby-u2f)
 
