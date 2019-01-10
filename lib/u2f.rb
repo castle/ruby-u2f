@@ -15,6 +15,7 @@ require 'u2f/sign_request'
 require 'u2f/sign_response'
 require 'u2f/fake_u2f'
 require 'u2f/u2f'
+require 'u2f/version'
 
 module U2F
   DIGEST = OpenSSL::Digest::SHA256

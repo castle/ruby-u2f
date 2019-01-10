@@ -2,7 +2,7 @@
 
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
-require 'version'
+require 'u2f/version'
 
 Gem::Specification.new do |s|
   s.name        = 'u2f'
