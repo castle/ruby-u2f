@@ -133,6 +133,7 @@ module U2F
     #
     def self.public_key_pem(key)
       raise PublicKeyDecodeError unless key.bytesize == 65 && key.byteslice(0) == "\x04"
+
       # http://tools.ietf.org/html/rfc5480
       der = OpenSSL::ASN1::Sequence(
         [
