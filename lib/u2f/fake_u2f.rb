@@ -3,7 +3,7 @@
 module U2F
   # This class is for mocking a U2F device for testing purposes.
   class FakeU2F
-    CURVE_NAME = 'prime256v1'.freeze
+    CURVE_NAME = 'prime256v1'
 
     attr_accessor :app_id, :counter, :key_handle_raw, :cert_subject
 

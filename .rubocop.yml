@@ -1,7 +1,7 @@
 Documentation:
   Enabled: false
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
 
 Metrics/LineLength:
   Max: 100
