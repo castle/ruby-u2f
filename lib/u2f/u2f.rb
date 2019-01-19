@@ -47,9 +47,7 @@ module U2F
                       registration_counter)
 
       # TODO: check that it's the correct key_handle as well
-      unless challenge == response.client_data.challenge
-        raise NoMatchingRequestError
-      end
+      raise NoMatchingRequestError unless challenge == response.client_data.challenge
 
       raise ClientDataTypeError unless response.client_data.authentication?
 
@@ -60,9 +58,7 @@ module U2F
       raise UserNotPresentError unless response.user_present?
 
       unless response.counter > registration_counter
-        unless response.counter.zero? && registration_counter.zero?
-          raise CounterTooLowError
-        end
+        raise CounterTooLowError unless response.counter.zero? && registration_counter.zero?
       end
     end
 
