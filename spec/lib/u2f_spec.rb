@@ -44,7 +44,7 @@ describe U2F do
 
     context 'with correct parameters' do
       it 'does not raise an error' do
-        expect { u2f_authenticate }.to_not raise_error
+        expect { u2f_authenticate }.not_to raise_error
       end
     end
 
@@ -63,6 +63,7 @@ describe U2F do
         expect { u2f_authenticate }.to raise_error(described_class::CounterTooLowError)
       end
     end
+
     context 'with incorrect counter' do
       let(:reg_public_key) { "\x00" }
 
@@ -87,7 +88,7 @@ describe U2F do
         reg = nil
         expect do
           reg = u2f.register!(auth_challenge, register_response)
-        end.to_not raise_error
+        end.not_to raise_error
         expect(reg.key_handle).to eq key_handle
       end
 
@@ -119,6 +120,7 @@ describe U2F do
 
     context 'with invalid key' do
       let(:public_key) { U2F.urlsafe_decode64('YV6FVSmH0ObY1cBRCsYJZ/CXF1gKsL+DW46rMfpeymtDZted2Ut2BraszUK1wg1+YJ4Bxt6r24WHNUYqKgeaSq8=') }
+
       it 'fails when first byte of the key is not 0x04' do
         expect do
           described_class::U2F.public_key_pem public_key
@@ -128,6 +130,7 @@ describe U2F do
 
     context 'with truncated key' do
       let(:public_key) { U2F.urlsafe_decode64('BJhSPkR3Rmgl') }
+
       it 'fails when key is to short' do
         expect do
           described_class::U2F.public_key_pem public_key
