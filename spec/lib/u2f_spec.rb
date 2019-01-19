@@ -63,6 +63,7 @@ describe U2F do
         expect { u2f_authenticate }.to raise_error(described_class::CounterTooLowError)
       end
     end
+
     context 'with incorrect counter' do
       let(:reg_public_key) { "\x00" }
 
