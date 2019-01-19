@@ -44,7 +44,7 @@ describe U2F do
 
     context 'with correct parameters' do
       it 'does not raise an error' do
-        expect { u2f_authenticate }.to_not raise_error
+        expect { u2f_authenticate }.not_to raise_error
       end
     end
 
@@ -87,7 +87,7 @@ describe U2F do
         reg = nil
         expect do
           reg = u2f.register!(auth_challenge, register_response)
-        end.to_not raise_error
+        end.not_to raise_error
         expect(reg.key_handle).to eq key_handle
       end
 
