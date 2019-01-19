@@ -18,7 +18,7 @@ module U2F
       # TODO: validate
       data = JSON.parse(json)
 
-      raise RegistrationError, code: data['errorCode'] if data['errorCode'] && data['errorCode'].positive?
+      raise RegistrationError, code: data['errorCode'] if data['errorCode']&.positive?
 
       if !data.key?('clientData') || !data.key?('registrationData')
         raise RegistrationError, message: 'Invalid JSON'
