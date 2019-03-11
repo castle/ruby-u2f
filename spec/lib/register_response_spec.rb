@@ -13,7 +13,7 @@ describe U2F::RegisterResponse do
   let(:registration_data_json_without_padding) do
     device.register_response(challenge).gsub(' ', '')
   end
-  let(:error_response) { device.register_response(challenge, error = true) }
+  let(:error_response) { device.register_response(challenge, true) }
   let(:registration_request) { U2F::RegisterRequest.new(challenge) }
   let(:register_response) do
     described_class.load_from_json(registration_data_json)
@@ -23,9 +23,7 @@ describe U2F::RegisterResponse do
     let(:registration_data_json) { error_response }
 
     it 'raises RegistrationError with code' do
-      expect {
-        register_response
-      }.to raise_error(U2F::RegistrationError) do |error|
+      expect { register_response }.to raise_error(U2F::RegistrationError) do |error|
         expect(error.code).to eq(4)
       end
     end
@@ -35,9 +33,7 @@ describe U2F::RegisterResponse do
     let(:registration_data_json) { '{}' }
 
     it 'raises RegistrationError with code' do
-      expect {
-        register_response
-      }.to raise_error(U2F::RegistrationError) do |error|
+      expect { register_response }.to raise_error(U2F::RegistrationError) do |error|
         expect(error.message).to eq('Invalid JSON')
       end
     end
@@ -47,9 +43,7 @@ describe U2F::RegisterResponse do
     let(:registration_data_json) { registration_data_json_without_padding }
 
     it 'does not raise "invalid base64" exception' do
-      expect {
-        register_response
-      }.not_to raise_error
+      expect { register_response }.not_to raise_error
     end
   end
 
