@@ -34,18 +34,19 @@ module U2F
     #   - +challenge+:: Challenge string
     #   - +response+:: Response from the U2F device as a +SignResponse+ object
     #   - +registration_public_key+:: Public key of the registered U2F device as binary string
-    #   - +registration_counter+:: +Integer+ with the current counter value of the registered device.
+    #   - +registration_counter+:: +Integer+ with the current counter value of the registered
+    #     device
     #
     # * *Raises*:
-    #   - +NoMatchingRequestError+:: if the challenge in the response doesn't match any of the provided ones.
+    #   - +NoMatchingRequestError+:: if the challenge in the response doesn't match any of the
+    #     provided ones
     #   - +ClientDataTypeError+:: if the response is of the wrong type
     #   - +AuthenticationFailedError+:: if the authentication failed
     #   - +UserNotPresentError+:: if the user wasn't present during the authentication
-    #   - +CounterTooLowError+:: if there is a counter mismatch between the registered one and the one in the response.
+    #   - +CounterTooLowError+:: if there is a counter mismatch between the registered one and
+    #     the one in the response
     #
-    def authenticate!(challenge, response, registration_public_key,
-                      registration_counter)
-
+    def authenticate!(challenge, response, registration_public_key, registration_counter)
       # TODO: check that it's the correct key_handle as well
       raise NoMatchingRequestError unless challenge == response.client_data.challenge
 
@@ -94,7 +95,8 @@ module U2F
     #   - A +Registration+ object
     #
     # * *Raises*:
-    #   - +UnmatchedChallengeError+:: if the challenge in the response doesn't match any of the provided ones.
+    #   - +UnmatchedChallengeError+:: if the challenge in the response doesn't match any of
+    #     the provided ones
     #   - +ClientDataTypeError+:: if the response is of the wrong type
     #   - +AttestationSignatureError+:: if the registration failed
     #

@@ -19,10 +19,12 @@ U2FExample::App.controllers :registrations do
     begin
       reg = u2f.register!(session[:challenges], response)
 
-      Registration.create!(certificate: reg.certificate,
-                           key_handle:  reg.key_handle,
-                           public_key:  reg.public_key,
-                           counter:     reg.counter)
+      Registration.create!(
+        certificate: reg.certificate,
+        key_handle: reg.key_handle,
+        public_key: reg.public_key,
+        counter: reg.counter
+      )
     rescue U2F::Error => e
       @error_message = "Unable to register: #{e.class.name}"
     ensure
