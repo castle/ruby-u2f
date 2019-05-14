@@ -37,7 +37,8 @@ module U2F
         client_data_json = client_data(::U2F::ClientData::REGISTRATION_TYP, challenge)
         JSON.dump(
           registrationData: reg_registration_data(client_data_json),
-          clientData: ::U2F.urlsafe_encode64(client_data_json)
+          clientData: ::U2F.urlsafe_encode64(client_data_json),
+          version: 'U2F_V2'
         )
       end
     end
