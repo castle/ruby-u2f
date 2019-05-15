@@ -11,7 +11,7 @@ describe U2F::RegisterResponse do
   let(:certificate) { Base64.strict_encode64(device.cert_raw) }
   let(:registration_data_json) { device.register_response(challenge) }
   let(:registration_data_json_without_padding) do
-    device.register_response(challenge).gsub(' ', '')
+    device.register_response(challenge).delete(' ')
   end
   let(:error_response) { device.register_response(challenge, true) }
   let(:registration_request) { U2F::RegisterRequest.new(challenge) }
@@ -54,7 +54,7 @@ describe U2F::RegisterResponse do
   end
 
   describe '#client_data' do
-    context 'challenge' do
+    context 'when challenge' do
       subject { register_response.client_data.challenge }
 
       it { is_expected.to eq challenge }

@@ -38,7 +38,7 @@ describe U2F do
   describe '#authenticate!' do
     let(:counter) { registration.counter }
     let(:reg_public_key) { registration.public_key }
-    let (:u2f_authenticate) do
+    let(:u2f_authenticate) do
       u2f.authenticate!(auth_challenge, sign_response, reg_public_key, counter)
     end
 
@@ -119,7 +119,11 @@ describe U2F do
     end
 
     context 'with invalid key' do
-      let(:public_key) { U2F.urlsafe_decode64('YV6FVSmH0ObY1cBRCsYJZ/CXF1gKsL+DW46rMfpeymtDZted2Ut2BraszUK1wg1+YJ4Bxt6r24WHNUYqKgeaSq8=') }
+      let(:public_key) do
+        described_class.urlsafe_decode64(
+          'YV6FVSmH0ObY1cBRCsYJZ/CXF1gKsL+DW46rMfpeymtDZted2Ut2BraszUK1wg1+YJ4Bxt6r24WHNUYqKgeaSq8='
+        )
+      end
 
       it 'fails when first byte of the key is not 0x04' do
         expect do
@@ -129,7 +133,7 @@ describe U2F do
     end
 
     context 'with truncated key' do
-      let(:public_key) { U2F.urlsafe_decode64('BJhSPkR3Rmgl') }
+      let(:public_key) { described_class.urlsafe_decode64('BJhSPkR3Rmgl') }
 
       it 'fails when key is to short' do
         expect do
