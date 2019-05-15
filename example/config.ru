@@ -1,5 +1,4 @@
 #!/usr/bin/env rackup
-# encoding: utf-8
 # frozen_string_literal: true
 
 # This file can be used to start Padrino,
