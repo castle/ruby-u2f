@@ -71,7 +71,7 @@ module U2F
     ##
     # Returns the public key, extracted from the registration data
     def public_key
-      # Base64 encode without linefeeds
+      # Base64 encode without line feeds
       Base64.strict_encode64(public_key_raw)
     end
 

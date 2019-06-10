@@ -183,7 +183,7 @@ module U2F
       @cert_key ||= generate_ec_key
     end
 
-    # Generate an eliptic curve public/private key.
+    # Generate an elliptic curve public/private key.
     #
     # Returns a OpenSSL::PKey::EC instance.
     def generate_ec_key

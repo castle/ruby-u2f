@@ -43,5 +43,5 @@ jobs:
         coditsu/build-runner:latest
 
 stages:
-  - coditsu
   - test
+  - coditsu
