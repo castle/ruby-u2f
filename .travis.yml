@@ -18,11 +18,11 @@ test: &test
 jobs:
   include:
     - <<: *test
-      rvm: 2.6.3
+      rvm: 2.6.5
     - <<: *test
-      rvm: 2.5.5
+      rvm: 2.5.7
     - <<: *test
-      rvm: 2.4.6
+      rvm: 2.4.8
 
     - stage: coditsu
       language: ruby
