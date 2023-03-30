@@ -85,7 +85,7 @@ GEM
       padrino-core (= 0.14.3)
     padrino-support (0.14.3)
     public_suffix (3.0.3)
-    rack (2.0.5)
+    rack (2.2.6.4)
     rack-protection (2.0.3)
       rack
     rake (12.3.1)
