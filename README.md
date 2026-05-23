@@ -20,7 +20,7 @@ Check out the [example](https://github.com/castle/ruby-u2f/tree/master/example) 
 
 There is another demo application available using the [Cuba](https://github.com/soveran/cuba) framework: [cuba-u2f-demo](https://github.com/badboy/cuba-u2f-demo) and a [blog post explaining the protocol and the implementation](http://fnordig.de/2015/03/06/u2f-demo-application/).
 
-You'll need Google Chrome 41 or later to use U2F.
+You'll need Google Chrome 41 or later to use U2F. See [this page](https://caniuse.com/u2f) for compatibility with other browsers.
 
 ## Installation
 
